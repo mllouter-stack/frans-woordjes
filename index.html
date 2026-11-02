@@ -62,6 +62,7 @@ select,.pill{height:44px;padding:0 14px;border-radius:12px;border:1.5px solid va
 .btn{height:56px;border-radius:14px;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,filter .2s}
 .btn:active{transform:scale(.97)}
 .btn.main{grid-column:1/-1;background:var(--primary);color:var(--on-primary)}
+.btn.soft{background:var(--primary-soft);color:var(--primary)}
 .btn.bad{background:var(--bad-soft);color:var(--bad)}
 .btn.good{background:var(--good-soft);color:var(--good)}
 .btn svg{flex:none}
@@ -316,10 +317,19 @@ for (const [id, m] of [["#tCards","cards"],["#tMatch","match"]])
   $(id).onclick = () => { mode = m; $("#tCards").setAttribute("aria-selected", m === "cards"); $("#tMatch").setAttribute("aria-selected", m === "match"); start(); };
 
 // ---------- kaarten ----------
-let queue, cur, opts, picked, total, done, missed;
-function startCards(){ queue = shuffle(pool()); total = queue.length; done = 0; missed = new Set(); next(); }
+const BLOCK = 10;
+let queue, cur, opts, picked, total, done, missed, blocks, bi, bDone, bMissed;
+function startCards(){
+  const p = shuffle(pool()); total = p.length; done = 0; missed = new Set();
+  blocks = [];
+  for (let i = 0; i < p.length; i += BLOCK) blocks.push(p.slice(i, i + BLOCK));
+  if (blocks.length > 1 && blocks.at(-1).length < 5) blocks.at(-2).push(...blocks.pop()); // geen mini-blokje aan het eind
+  bi = 0; startBlock();
+}
+// een blok is pas klaar als je elk woord één keer goed hebt; foute woorden komen binnen het blok terug
+function startBlock(){ queue = shuffle(blocks[bi]); bDone = 0; bMissed = new Set(); next(); }
 function next(){
-  if (!queue.length) return end();
+  if (!queue.length) return blockEnd();
   cur = queue.shift(); picked = null; opts = choices(cur); drawCard();
 }
 // 3 foute keuzes: eerst uit dezelfde groep (lijkt meer op elkaar), dan uit de rest; nooit dezelfde tekst als het goede antwoord
@@ -330,7 +340,8 @@ function choices(w){
   return shuffle(out);
 }
 function drawCard(){
-  setMeta(done + " van " + total + " gekend", missed.size ? missed.size + " fout" : "", done / total * 100);
+  setMeta("Blok " + (bi + 1) + " van " + blocks.length + " · " + bDone + "/" + blocks[bi].length + " goed",
+    bMissed.size ? bMissed.size + " fout" : "", bDone / blocks[bi].length * 100);
   const answered = picked !== null, right = A(cur);
   $("#stage").innerHTML = `
     <div class="card" id="card">
@@ -350,9 +361,26 @@ function drawCard(){
 }
 function choose(o){ if (picked === null){ picked = o; drawCard(); } }
 function grade(){
-  if (picked === A(cur)) done++;
-  else { missed.add(cur); queue.splice(Math.min(queue.length, 3), 0, cur); } // komt snel terug
+  if (picked === A(cur)){ done++; bDone++; }
+  else { missed.add(cur); bMissed.add(cur); queue.splice(Math.min(queue.length, 3), 0, cur); } // komt snel terug
   next();
+}
+function blockEnd(){
+  if (bi === blocks.length - 1) return end();
+  const m = [...bMissed];
+  setMeta("Blok " + (bi + 1) + " van " + blocks.length + " klaar", "", 100);
+  $("#stage").innerHTML = `<div class="card end">
+    <h2>Blok ${bi + 1} klaar</h2>
+    <p>${m.length ? `Je kent nu alle ${blocks[bi].length} woorden. Deze waren lastig:` : `Alle ${blocks[bi].length} woorden in één keer goed.`}</p>
+    ${m.length ? `<ul class="miss">${m.map(w => `<li><b>${esc(w.f)}</b><span>${esc(w.n)}</span></li>`).join("")}</ul>` : ""}
+  </div>
+  <div class="btns" style="margin-top:16px">
+    <button class="btn main" id="nextBlock">Volgende ${blocks[bi + 1].length} woorden</button>
+    ${m.length ? `<button class="btn soft" id="redo" style="grid-column:1/-1">Dit blok nog een keer</button>` : ""}
+  </div>`;
+  $("#nextBlock").onclick = () => { bi++; startBlock(); };
+  if (m.length) $("#redo").onclick = startBlock;
+  $("#nextBlock").focus({preventScroll:true});
 }
 function end(){
   const m = [...missed];
