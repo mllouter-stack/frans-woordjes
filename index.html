@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Frans Woordjes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf7ff; --card:#ffffff; --text:#0f172a; --muted:#475569; --border:#e9e1fa;
+  --primary:#7c3aed; --on-primary:#ffffff; --primary-soft:#f1eafe;
+  --good:#047857; --good-soft:#e3f5ee; --bad:#b91c1c; --bad-soft:#fdeaea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13111a; --card:#1e1b27; --text:#f1eef7; --muted:#b3adc2; --border:#332d42;
+    --primary:#a78bfa; --on-primary:#160f2b; --primary-soft:#2a2340;
+    --good:#4ade80; --good-soft:#173324; --bad:#f87171; --bad-soft:#3b1a1a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13111a; --card:#1e1b27; --text:#f1eef7; --muted:#b3adc2; --border:#332d42;
+  --primary:#a78bfa; --on-primary:#160f2b; --primary-soft:#2a2340;
+  --good:#4ade80; --good-soft:#173324; --bad:#f87171; --bad-soft:#3b1a1a;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100dvh;-webkit-font-smoothing:antialiased}
+button,select{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+button{border:0;background:none}
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;padding:24px 16px 40px;display:flex;flex-direction:column;gap:24px}
+.head{font-family:"Baloo 2",system-ui,sans-serif}
+
+/* bovenbalk: hoofdstuk + richting */
+.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.top h1{font-family:"Baloo 2",sans-serif;font-size:26px;line-height:1;margin:0 auto 0 0}
+select,.pill{height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);font-size:15px;font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px}
+
+/* tabs */
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--primary-soft);padding:4px;border-radius:14px}
+.tabs button{height:44px;border-radius:10px;font-weight:600;color:var(--muted);transition:background .2s,color .2s}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums}
+.track{height:6px;border-radius:9px;background:var(--border);overflow:hidden;margin-top:8px}
+.track i{display:block;height:100%;background:var(--primary);transition:width .3s ease-out}
+
+/* kaart */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:20px;min-height:280px;padding:32px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;width:100%}
+.q,.a,.ex{display:block}
+.q{font-family:"Baloo 2",sans-serif;font-size:clamp(32px,9vw,44px);line-height:1.1;margin:0}
+.a{font-family:"Baloo 2",sans-serif;font-size:clamp(24px,7vw,32px);line-height:1.15;color:var(--primary);margin:0;animation:in .25s ease-out}
+.ex{color:var(--muted);font-size:15px;max-width:420px;margin:4px 0 0;animation:in .25s ease-out}
+.ex b{color:var(--text)}
+.tap{color:var(--muted);font-size:15px}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{height:56px;border-radius:14px;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,filter .2s}
+.btn:active{transform:scale(.97)}
+.btn.main{grid-column:1/-1;background:var(--primary);color:var(--on-primary)}
+.btn.bad{background:var(--bad-soft);color:var(--bad)}
+.btn.good{background:var(--good-soft);color:var(--good)}
+.btn svg{flex:none}
+
+/* koppelen */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.col{display:flex;flex-direction:column;gap:10px}
+.tile{min-height:60px;padding:8px 12px;border-radius:14px;background:var(--card);border:1.5px solid var(--border);font-size:16px;font-weight:600;line-height:1.25;transition:background .2s,border-color .2s,opacity .25s}
+.tile.sel{border-color:var(--primary);background:var(--primary-soft)}
+.tile.ok{border-color:var(--good);background:var(--good-soft);color:var(--good);opacity:.45;cursor:default}
+.tile.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .3s}
+@keyframes shake{33%{transform:translateX(-4px)}66%{transform:translateX(4px)}}
+
+/* einde */
+.end h2{font-family:"Baloo 2",sans-serif;font-size:32px;margin:0}
+.end p{margin:0;color:var(--muted)}
+.miss{list-style:none;padding:0;margin:8px 0 0;width:100%;max-width:360px;text-align:left}
+.miss li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--border);font-size:15px}
+.hidden{display:none!important}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <h1>Frans woordjes</h1>
+    <label class="sr" for="chap" style="position:absolute;left:-9999px">Hoofdstuk</label>
+    <select id="chap">
+      <option value="all">H17 t/m 19</option>
+      <option value="17">H17 Hoeveelheid</option>
+      <option value="18">H18 Signaalwoorden</option>
+      <option value="19">H19 Examenwoorden</option>
+    </select>
+    <button class="pill" id="dir" aria-label="Wissel richting"></button>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tCards" aria-selected="true">Kaarten</button>
+    <button role="tab" id="tMatch" aria-selected="false">Koppelen</button>
+  </div>
+
+  <section id="play">
+    <div class="meta"><span id="mLeft"></span><span id="mRight"></span></div>
+    <div class="track"><i id="bar"></i></div>
+  </section>
+
+  <div id="stage"></div>
+</main>
+
+<script>
+// [frans, nederlands, Franse voorbeeldzin met [vetgedrukt] deel]
+const CH = {
+17: {name:"17 · Qualité, fréquence, intensité", groups:[
+ ["Frans → NL", [
+  ["annuel(le)","jaarlijks","La fête [annuelle] du village attire beaucoup de touristes chaque été."],
+  ["à peu près","ongeveer","Le trajet dure [à peu près] deux heures, mais cela dépend du trafic."],
+  ["augmenter","stijgen, omhooggaan","Les prix des billets de concert vont [augmenter] à partir du mois prochain."],
+  ["au moins","minstens","Pour réussir l'examen, tu dois étudier [au moins] une heure par jour."],
+  ["la barquette","het bakje","J'ai acheté une [barquette] de fraises pour faire un dessert délicieux."],
+  ["la brique","het pak (melk)","Il a mis une [brique] de lait dans le caddie pour faire des crêpes."],
+  ["le choix","de keuze","Dans ces lieux d'éducation, les élèves apprennent à faire leurs propres [choix]."],
+  ["diminuer","verminderen, afnemen","Le médecin m'a conseillé de [diminuer] ma consommation de sucre."],
+  ["la dizaine","het tiental, ongeveer tien","On a organisé plus de 40 expositions sur Pablo Picasso dans une [dizaine] de pays."],
+  ["élevé(e)","hoog","Le prix de ce smartphone est trop [élevé] pour mon budget d'étudiant."],
+  ["éloigné(e)","ver (verwijderd), afgelegen","Son école est assez [éloignée] de sa maison, il prend donc le bus."],
+  ["en moyenne","gemiddeld","Chaque jour, on roulait [en moyenne] 40 kilomètres à vélo."],
+  ["ennuyeux / ennuyeuse","vervelend, saai","Ce que je trouve [ennuyeux] à la campagne, c'est qu'on doit souvent se déplacer."],
+  ["essentiellement","voornamelijk, hoofdzakelijk","Ce plat est [essentiellement] composé de légumes frais et d'herbes."],
+  ["fréquent(e)","frequent, veelvoorkomend","Les pannes de courant sont [fréquentes] pendant les orages."],
+  ["la hauteur","de hoogte","En montagne, la température baisse avec la [hauteur], il fait donc plus froid au sommet."],
+  ["le manque","het gebrek, het tekort","Le [manque] d'eau potable est un problème grave dans certains pays."],
+  ["la moitié","de helft","Certains oiseaux vont perdre la [moitié] de leur poids pendant le trajet."],
+  ["le morceau","het stuk","Un [morceau] de la tour Eiffel va être mis en vente fin novembre."],
+  ["nécessaire","noodzakelijk","Pour pratiquer ce sport, il est [nécessaire] de porter un casque et des protège-genoux."],
+  ["ne … que","slechts, maar","Je [n']ai [que] deux tickets pour le concert, désolé."],
+  ["obligatoire","verplicht","Cette matière est [obligatoire] pour les élèves de 6 à 16 ans."],
+  ["le paquet","het pak (koekjes)","Ma mère a acheté un [paquet] de biscuits pour le goûter."],
+  ["pas mal de","behoorlijk wat, nogal wat","Il y a [pas mal de] monde à la plage aujourd'hui malgré le vent."],
+  ["la pincée","het snufje","Ajoute une [pincée] de sel pour relever le goût de la soupe."],
+  ["plein de","heel veel","Il y a [plein de] nouvelles activités proposées au centre sportif cette année."],
+  ["la plupart","de meeste(n), het merendeel","La [plupart] des élèves ont réussi l'examen de français."],
+  ["plusieurs","meerdere, verscheidene","J'ai vu ce film [plusieurs] fois et je l'adore toujours autant."],
+  ["principal(e)","belangrijkste, voornaamste","Le [principal] problème est le manque de temps pour finir ce projet."],
+  ["la qualité","de kwaliteit","La [qualité] de ces chaussures justifie leur prix élevé."],
+  ["rare","zeldzaam, schaars","Les places pour ce concert sont [rares], il faut réserver très tôt."],
+  ["le sachet","het zakje","J'ai mis un [sachet] de thé dans la tasse d'eau chaude."],
+  ["suffisant(e)","voldoende, toereikend","Cette somme n'est pas [suffisante] pour couvrir tous les frais du voyage."],
+  ["tant","zoveel","Il y a [tant] de choses à voir dans cette ville que deux jours ne suffisent pas."],
+  ["un tas de","een hoop","J'ai [un tas de] devoirs à faire pour lundi prochain."],
+  ["la tranche","de plak, de snee","Je voudrais une [tranche] de jambon et du fromage pour mon sandwich."],
+  ["trop","te veel","Il y a [trop] de bruit dans cette salle pour se concentrer."],
+  ["utile","nuttig","Cette application est très [utile] pour apprendre une nouvelle langue."],
+  ["la vérité","de waarheid","Il est important de dire la [vérité] à tes parents dans cette situation."],
+  ["la vitesse","de snelheid","La [vitesse] maximale autorisée en ville est de 50 km/h."]]],
+ ["NL → Frans", [
+  ["assez","genoeg","Est-ce que tu as [assez] de temps pour finir tes devoirs aujourd'hui ?"],
+  ["beaucoup","veel","Il y a [beaucoup] de gens sur la plage parce qu'il fait beau."],
+  ["chaque","elk(e)","[Chaque] élève doit faire une présentation devant la classe."],
+  ["le fonctionnement","de werking","Peux-tu m'expliquer le [fonctionnement] de cette machine ?"],
+  ["mauvais(e)","slecht","C'était un [mauvais] film, je l'ai trouvé ennuyeux et trop long."],
+  ["meilleur(e)","beter","Ma sœur est [meilleure] en mathématiques que moi."],
+  ["ne … jamais","nooit","Je [n']ai [jamais] pris l'avion, j'ai peur de voler."],
+  ["le nombre","het aantal","Le [nombre] de visiteurs à la fête était plus élevé que prévu."],
+  ["peu","weinig","Il y a [peu] de places restantes pour le concert, nous devons vite réserver."],
+  ["plus de","meer dan","Il a lu [plus de] dix livres cet été."],
+  ["le risque","het risico","Le [risque] de tomber est grand quand tu marches sur la glace."],
+  ["simple","eenvoudig","Cette recette est [simple], même les enfants peuvent la faire."],
+  ["souvent","vaak","Je vais [souvent] au cinéma avec mes amis."],
+  ["le total","het totaal","Le [total] de l'addition s'élève à 25 euros."],
+  ["vite","snel","Tu dois courir [vite] pour attraper le bus."]]]
+]},
+18: {name:"18 · Les mots de liaison", groups:[
+ ["Opsomming en aanvulling", [
+  ["en plus","bovendien, daarbij","[En plus], le nombre d'heures qu'ils peuvent travailler comme influenceur doit être limité."],
+  ["de plus","bovendien, daarnaast","Il est intelligent, et [de plus], il est très travailleur."],
+  ["aussi","ook","Je pense [aussi] qu'il est important de faire du sport régulièrement pour rester en bonne santé."],
+  ["également","eveneens","Les élèves doivent [également] faire leurs devoirs à la maison après les cours."],
+  ["d'abord","ten eerste","[D'abord], il faut lire attentivement les consignes avant de commencer l'examen."],
+  ["ensuite","daarna, vervolgens","[Ensuite], il est conseillé de relire ses réponses pour vérifier qu'il n'y a pas d'erreurs."],
+  ["finalement","ten slotte","[Finalement], après beaucoup d'efforts, j'ai réussi à obtenir mon diplôme."],
+  ["d'une part … d'autre part","enerzijds … anderzijds","[D'une part], je veux réussir mes études, mais [d'autre part], j'ai envie de profiter de ma jeunesse."]]],
+ ["Voorbeelden en uitleg", [
+  ["ainsi","zo, op die manier","Nous avons mis l'ours sur un brancard. [Ainsi], nous avons pu le ramener dans le zoo."],
+  ["c'est-à-dire","dat wil zeggen","Je veux devenir médecin, [c'est-à-dire] aider les gens et sauver des vies."]]],
+ ["Reden en oorzaak", [
+  ["puisque","aangezien","[Puisque] tu as bien révisé, je suis sûr que tu réussiras ton examen."],
+  ["c'est pourquoi","daarom","Il pleut beaucoup aujourd'hui, [c'est pourquoi] j'ai décidé de rester à la maison."],
+  ["car","want","À l'intérieur, c'est plutôt sombre, [car] il n'y a pas de fenêtre."],
+  ["en raison de","vanwege","[En raison de] la pluie, le match de foot a été annulé."],
+  ["grâce à","dankzij","[Grâce à] lui, on discute avec d'autres élèves et on se fait des amis."]]],
+ ["Tegenstelling", [
+  ["mais","maar","[Mais] le coupable est en réalité un ouvrier italien."],
+  ["au contraire","daarentegen","Je n'aime pas le poisson. [Au contraire], je préfère la viande."],
+  ["bien que","hoewel","[Bien que] je travaille beaucoup, je ne suis jamais satisfait."],
+  ["cependant","echter","J'aime le chocolat. [Cependant], je n'en mange pas trop pour ma santé."],
+  ["pourtant","toch","[Pourtant], le manga n'a pas toujours été populaire en France."],
+  ["néanmoins","niettemin","Le film était long et ennuyeux. [Néanmoins], les acteurs jouaient bien."],
+  ["toutefois","desalniettemin","Ce pull est joli. [Toutefois], je préfère l'autre pour sa couleur."],
+  ["en revanche","daarentegen","Je n'aime pas le thé. [En revanche], j'adore le café le matin."],
+  ["par contre","aan de andere kant","Ce pantalon est trop grand. [Par contre], la veste est à ma taille."],
+  ["malgré","ondanks","[Malgré] les quatre cents pompiers de Paris présents sur place, il a été très difficile d'éteindre le feu."],
+  ["tandis que","terwijl","Son père l'encourage [tandis que] sa mère a toujours un peu peur."]]],
+ ["Voorwaarde en uitzondering", [
+  ["si","als, indien","Je viendrai à la fête [si] j'ai fini mes devoirs."],
+  ["sauf","behalve","Les passagers n'ont rien à faire, [sauf] admirer le paysage tranquillement."],
+  ["à condition que","op voorwaarde dat","Tu peux emprunter mon vélo [à condition que] tu le ramènes demain."],
+  ["sinon","anders, zo niet","Dépêche-toi, [sinon] nous allons manquer le train."]]],
+ ["Tijd en volgorde", [
+  ["depuis","sinds","Félix adore le parkour [depuis] qu'il a 9 ans."],
+  ["lorsque","toen, wanneer","[Lorsque] j'étais petit, j'habitais à la campagne."],
+  ["avant de","voordat","Dadju souhaite faire plusieurs albums [avant de] faire une pause dans quelques années."],
+  ["désormais","voortaan","[Désormais], je vais au collège en vélo et non plus en bus."]]],
+ ["Samenvatting en conclusie", [
+  ["en fin de compte","uiteindelijk","[En fin de compte], ce film n'était pas aussi bon que je le pensais."],
+  ["en résumé","samengevat","[En résumé], nous devons manger sainement et faire du sport régulièrement."],
+  ["en somme","kortom","[En somme], c'était une journée parfaite : du soleil et des amis."],
+  ["donc","dus","Il est [donc] nécessaire de s'entraîner souvent."],
+  ["bref","kortom","Je fais de la trottinette après l'école et le week-end… [bref], à chaque fois que je peux !"],
+  ["en effet","inderdaad","[En effet], il faut bien réfléchir avant de prendre une décision importante."]]],
+ ["NL → Frans", [
+  ["comme","net als, zoals","Mon frère est sportif [comme] mon père."],
+  ["par exemple","bijvoorbeeld","J'aime les fruits, [par exemple] les bananes et les pommes."],
+  ["notamment","met name","Il aime les sports, [notamment] le football et le basketball."],
+  ["il en résulte que","daaruit volgt dat","Le bus est en retard, [il en résulte que] nous arriverons en retard."],
+  ["à cause de","vanwege","Le match est annulé [à cause de] la pluie."],
+  ["de sorte que","zodat","J'étudie beaucoup, [de sorte que] je réussis mes examens."],
+  ["parce que","omdat","Je suis fatigué [parce que] j'ai mal dormi."],
+  ["surtout","vooral","J'aime l'été, [surtout] pour son beau temps."],
+  ["c'est que","dat komt omdat","Il est en retard, [c'est que] son vélo est cassé."],
+  ["pour","om … te","J'économise de l'argent [pour] acheter un nouveau smartphone."],
+  ["contrairement à","in tegenstelling tot","[Contrairement à] l'allemand, le français sonne très beau."],
+  ["en réalité","in werkelijkheid","Sur Instagram elle apparaît très extravertie, [en réalité] elle est très timide."],
+  ["en fait","in feite, eigenlijk","Il dit qu'il est malade, mais [en fait] il est juste fatigué."],
+  ["toutefois","echter","Je veux sortir. [Toutefois] je dois faire mes devoirs."],
+  ["au lieu de","in plaats van","Il prend le vélo [au lieu de] prendre le bus."]]]
+]},
+19: {name:"19 · Les mots courants d'examen", groups:[
+ ["Vraagwoorden en examentaal", [
+  ["qu'est-ce qui","wat (onderwerp)","[Qu'est-ce qui] est étonnant d'après le 2ème alinéa ?"],
+  ["qu'est-ce que","wat (lijdend vw.)","[Qu'est-ce qu']on lit sur les voitures au dernier alinéa ?"],
+  ["qui","wie","[Qui] étaient Marguerite et Aimé Maeght d'après le 2ème alinéa ?"],
+  ["ne … pas","niet","Qu'est-ce qu'on [ne] lit [pas] au dernier alinéa ?"],
+  ["dire","zeggen","Qu'est-ce que l'auteur [dit] sur cet événement ?"],
+  ["la question","de vraag","À quelle [question] est-ce que le premier alinéa ne donne pas de réponse ?"],
+  ["lire","lezen","Qu'est-ce qu'on [lit] au 2ème alinéa ?"],
+  ["raconter","vertellen","Qu'est-ce que l'auteur [raconte] dans le premier alinéa ?"],
+  ["pouvoir","kunnen","Qu'est-ce qu'on [peut] lire au 3ème alinéa ?"],
+  ["vrai(e)","waar","Qu'est-ce qui est [vrai] d'après le premier alinéa ?"],
+  ["servir","dienen","À quoi [sert] le 3ème alinéa ?"],
+  ["apprendre","vertellen, leren","Qu'est-ce que le deuxième alinéa nous [apprend] sur la popularité de Stromae ?"],
+  ["montrer","aantonen","Qu'est-ce que le premier alinéa [montre] ?"],
+  ["selon","volgens","Qu'est-ce qui est vrai [selon] le dernier alinéa ?"],
+  ["le problème","het probleem","Quel est le [problème] d'après le premier alinéa ?"],
+  ["caractéristique","karakteristiek","Qu'est-ce qui est [caractéristique] des sculptures de Niki de Saint Phalle d'après le 2ème alinéa ?"],
+  ["pourquoi","waarom","[Pourquoi] est-ce que les oiseaux migrent en hiver d'après le premier alinéa ?"],
+  ["d'après","volgens","Pourquoi est-ce que Félix a de la chance [d'après] le 3ème alinéa ?"],
+  ["faire","doen","Qu'est-ce que Laure a [fait] après avoir fini ses études d'après le premier alinéa ?"],
+  ["devoir","moeten","Pourquoi est-ce que les garçons [doivent] enlever leur casquette en classe d'après le 3ème alinéa ?"],
+  ["écrire","schrijven","Il faut bien [écrire] pour réussir l'examen de français."],
+  ["faux / fausse","onjuist","Dans le texte, il y a une phrase [fausse] sur la vie de Napoléon."],
+  ["la réponse","het antwoord","Quelle est la [réponse] à la deuxième question de l'examen ?"],
+  ["l'alinéa (m)","de alinea","Lis attentivement l'[alinéa] qui parle des vacances d'été."],
+  ["dernier / dernière","laatste","La [dernière] question est toujours la plus difficile."],
+  ["premier / première","eerste","Le [premier] exercice porte sur la compréhension écrite."],
+  ["le texte","de tekst","Résume le [texte] en une ou deux phrases simples."],
+  ["lequel / laquelle","welk(e)","Choisis [lequel] des trois sujets tu veux développer."],
+  ["la ligne","de regel","Qu'est-ce que ces [lignes] nous apprennent sur son comportement ?"],
+  ["quel(le)(s)","welk(e), wat","[Quel] est le sujet principal de ce texte ?"],
+  ["cela","dit, dat","Pourquoi est-ce que l'auteur dit [cela] ?"],
+  ["la phrase","de zin","Que signifie la [phrase] suivante ?"],
+  ["le ton","de toon","Quel est le [ton] de ce texte ?"]]]
+]}
+};
+
+
+const WORDS = [];
+for (const [ch, c] of Object.entries(CH)) for (const [, list] of c.groups)
+  for (const [f, n, ex] of list) WORDS.push({ch, f, n, ex});
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const ICON = {
+  x: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>',
+  check: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>',
+  swap: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7"/></svg>'
+};
+
+let chap = "all", fr2nl = true, mode = "cards";
+const pool = () => WORDS.filter(w => chap === "all" || w.ch === chap);
+const Q = w => fr2nl ? w.f : w.n, A = w => fr2nl ? w.n : w.f;
+
+function setMeta(left, right, pct){ $("#mLeft").textContent = left; $("#mRight").textContent = right; $("#bar").style.width = pct + "%"; }
+function start(){ $("#play").classList.remove("hidden"); mode === "cards" ? startCards() : startMatch(); }
+
+$("#chap").onchange = e => { chap = e.target.value; start(); };
+function renderDir(){ $("#dir").innerHTML = (fr2nl ? "FR → NL " : "NL → FR ") + ICON.swap; }
+$("#dir").onclick = () => { fr2nl = !fr2nl; renderDir(); start(); };
+for (const [id, m] of [["#tCards","cards"],["#tMatch","match"]])
+  $(id).onclick = () => { mode = m; $("#tCards").setAttribute("aria-selected", m === "cards"); $("#tMatch").setAttribute("aria-selected", m === "match"); start(); };
+
+// ---------- kaarten ----------
+let queue, cur, shown, total, done, missed;
+function startCards(){ queue = shuffle(pool()); total = queue.length; done = 0; missed = new Set(); next(); }
+function next(){
+  if (!queue.length) return end();
+  cur = queue.shift(); shown = false; drawCard();
+}
+function drawCard(){
+  setMeta(done + " van " + total + " gekend", missed.size ? missed.size + " fout" : "", done / total * 100);
+  $("#stage").innerHTML = `
+    <button class="card" id="card" aria-label="${shown ? "" : "Toon antwoord"}">
+      <span class="q">${esc(Q(cur))}</span>
+      ${shown ? `<span class="a">${esc(A(cur))}</span><span class="ex">${esc(cur.ex).replace(/\[(.+?)\]/g, "<b>$1</b>")}</span>`
+              : `<span class="tap">Tik om het antwoord te zien</span>`}
+    </button>
+    <div class="btns" style="margin-top:16px">
+      ${shown ? `<button class="btn bad" id="no">${ICON.x}Fout</button><button class="btn good" id="yes">${ICON.check}Goed</button>`
+              : `<button class="btn main" id="show">Toon antwoord</button>`}
+    </div>`;
+  if (shown){ $("#no").onclick = () => grade(false); $("#yes").onclick = () => grade(true); $("#card").onclick = null; }
+  else { $("#show").onclick = $("#card").onclick = reveal; }
+}
+function reveal(){ shown = true; drawCard(); $("#yes").focus({preventScroll:true}); }
+function grade(ok){
+  if (ok) done++;
+  else { missed.add(cur); queue.splice(Math.min(queue.length, 3), 0, cur); } // komt snel terug
+  next();
+}
+function end(){
+  const m = [...missed];
+  setMeta(total + " van " + total + " gekend", "", 100);
+  $("#stage").innerHTML = `<div class="card end">
+    <h2>${m.length ? "Klaar" : "Alles goed"}</h2>
+    <p>${m.length ? `Deze ${m.length} woorden waren lastig:` : "Je kende alle " + total + " woorden in één keer."}</p>
+    ${m.length ? `<ul class="miss">${m.map(w => `<li><b>${esc(w.f)}</b><span>${esc(w.n)}</span></li>`).join("")}</ul>` : ""}
+  </div>
+  <div class="btns" style="margin-top:16px"><button class="btn main" id="again">Opnieuw</button></div>`;
+  $("#again").onclick = start;
+}
+
+// ---------- koppelen ----------
+const PER = 5;
+let rounds, ri, errors, sel, left;
+function startMatch(){
+  // geen dubbele vertalingen in één ronde (bv. twee keer 'kortom')
+  rounds = [];
+  for (const w of shuffle(pool())){
+    let r = rounds.find(r => r.length < PER && !r.some(x => x.n === w.n || x.f === w.f));
+    if (!r) rounds.push(r = []);
+    r.push(w);
+  }
+  rounds = rounds.filter(r => r.length > 1); ri = 0; errors = 0; drawRound();
+}
+function drawRound(){
+  const r = rounds[ri]; left = r.length; sel = null;
+  setMeta("Ronde " + (ri + 1) + " van " + rounds.length, errors ? errors + " fout" : "", ri / rounds.length * 100);
+  const tile = (w, side) => `<button class="tile" data-i="${r.indexOf(w)}" data-s="${side}">${esc(side === "q" ? Q(w) : A(w))}</button>`;
+  $("#stage").innerHTML = `<div class="grid"><div class="col">${shuffle(r).map(w => tile(w, "q")).join("")}</div><div class="col">${shuffle(r).map(w => tile(w, "a")).join("")}</div></div>`;
+  document.querySelectorAll(".tile").forEach(t => t.onclick = () => pick(t));
+}
+function pick(t){
+  if (t.classList.contains("ok")) return;
+  if (!sel || sel.dataset.s === t.dataset.s){
+    sel?.classList.remove("sel");
+    sel = sel === t ? null : t; sel?.classList.add("sel");
+    return;
+  }
+  const a = sel; sel = null; a.classList.remove("sel");
+  if (a.dataset.i === t.dataset.i){
+    a.classList.add("ok"); t.classList.add("ok"); a.disabled = t.disabled = true;
+    if (--left === 0) setTimeout(() => ++ri < rounds.length ? drawRound() : matchEnd(), 400);
+  } else {
+    errors++; setMeta("Ronde " + (ri + 1) + " van " + rounds.length, errors + " fout", ri / rounds.length * 100);
+    for (const x of [a, t]){ x.classList.remove("no"); void x.offsetWidth; x.classList.add("no"); setTimeout(() => x.classList.remove("no"), 400); }
+  }
+}
+function matchEnd(){
+  setMeta("Alle rondes klaar", "", 100);
+  $("#stage").innerHTML = `<div class="card end"><h2>${errors ? "Klaar" : "Alles goed"}</h2>
+    <p>${errors ? errors + " keer fout gekoppeld." : "Geen enkele fout."}</p></div>
+    <div class="btns" style="margin-top:16px"><button class="btn main" id="again">Opnieuw</button></div>`;
+  $("#again").onclick = start;
+}
+
+document.addEventListener("keydown", e => {
+  if (mode !== "cards" || !cur || !$("#card")) return;
+  if (!shown && (e.key === " " || e.key === "Enter")){ e.preventDefault(); reveal(); }
+  else if (shown && e.key === "ArrowLeft") grade(false);
+  else if (shown && e.key === "ArrowRight") grade(true);
+});
+
+renderDir(); start();
+</script>
+</body>
+</html>
