@@ -66,6 +66,18 @@ select,.pill{height:44px;padding:0 14px;border-radius:12px;border:1.5px solid va
 .btn.good{background:var(--good-soft);color:var(--good)}
 .btn svg{flex:none}
 
+/* 4 keuzes */
+#card{min-height:200px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.opt{min-height:56px;padding:10px 16px;border-radius:14px;background:var(--card);border:1.5px solid var(--border);font-size:17px;font-weight:600;text-align:left;display:flex;align-items:center;gap:12px;transition:background .2s,border-color .2s,opacity .2s}
+.opt:not(:disabled):hover{border-color:var(--primary)}
+.opt:not(:disabled):active{transform:scale(.98)}
+.opt .num{flex:none;width:24px;height:24px;border-radius:7px;background:var(--primary-soft);color:var(--primary);font-size:13px;display:grid;place-items:center}
+.opt.ok{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.no{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.opt.dim{opacity:.45}
+.opt:disabled{cursor:default}
+
 /* koppelen */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .col{display:flex;flex-direction:column;gap:10px}
@@ -278,8 +290,8 @@ const CH = {
 
 
 const WORDS = [];
-for (const [ch, c] of Object.entries(CH)) for (const [, list] of c.groups)
-  for (const [f, n, ex] of list) WORDS.push({ch, f, n, ex});
+for (const [ch, c] of Object.entries(CH)) for (const [grp, list] of c.groups)
+  for (const [f, n, ex] of list) WORDS.push({ch, grp, f, n, ex});
 
 const $ = s => document.querySelector(s);
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -304,30 +316,41 @@ for (const [id, m] of [["#tCards","cards"],["#tMatch","match"]])
   $(id).onclick = () => { mode = m; $("#tCards").setAttribute("aria-selected", m === "cards"); $("#tMatch").setAttribute("aria-selected", m === "match"); start(); };
 
 // ---------- kaarten ----------
-let queue, cur, shown, total, done, missed;
+let queue, cur, opts, picked, total, done, missed;
 function startCards(){ queue = shuffle(pool()); total = queue.length; done = 0; missed = new Set(); next(); }
 function next(){
   if (!queue.length) return end();
-  cur = queue.shift(); shown = false; drawCard();
+  cur = queue.shift(); picked = null; opts = choices(cur); drawCard();
+}
+// 3 foute keuzes: eerst uit dezelfde groep (lijkt meer op elkaar), dan uit de rest; nooit dezelfde tekst als het goede antwoord
+function choices(w){
+  const seen = new Set([A(w)]), out = [A(w)];
+  const others = [...shuffle(WORDS.filter(x => x.grp === w.grp && x.ch === w.ch)), ...shuffle(WORDS.filter(x => x.ch === w.ch)), ...shuffle(WORDS)];
+  for (const x of others){ if (out.length === 4) break; if (!seen.has(A(x))){ seen.add(A(x)); out.push(A(x)); } }
+  return shuffle(out);
 }
 function drawCard(){
   setMeta(done + " van " + total + " gekend", missed.size ? missed.size + " fout" : "", done / total * 100);
+  const answered = picked !== null, right = A(cur);
   $("#stage").innerHTML = `
-    <button class="card" id="card" aria-label="${shown ? "" : "Toon antwoord"}">
+    <div class="card" id="card">
       <span class="q">${esc(Q(cur))}</span>
-      ${shown ? `<span class="a">${esc(A(cur))}</span><span class="ex">${esc(cur.ex).replace(/\[(.+?)\]/g, "<b>$1</b>")}</span>`
-              : `<span class="tap">Tik om het antwoord te zien</span>`}
-    </button>
-    <div class="btns" style="margin-top:16px">
-      ${shown ? `<button class="btn bad" id="no">${ICON.x}Fout</button><button class="btn good" id="yes">${ICON.check}Goed</button>`
-              : `<button class="btn main" id="show">Toon antwoord</button>`}
-    </div>`;
-  if (shown){ $("#no").onclick = () => grade(false); $("#yes").onclick = () => grade(true); $("#card").onclick = null; }
-  else { $("#show").onclick = $("#card").onclick = reveal; }
+      ${answered ? `<span class="ex">${esc(cur.ex).replace(/\[(.+?)\]/g, "<b>$1</b>")}</span>` : `<span class="tap">Kies de goede vertaling</span>`}
+    </div>
+    <div class="opts" role="group" aria-label="Antwoorden">
+      ${opts.map((o, i) => {
+        const cls = !answered ? "" : o === right ? "ok" : o === picked ? "no" : "dim";
+        const ico = cls === "ok" ? ICON.check : cls === "no" ? ICON.x : `<span class="num" aria-hidden="true">${i + 1}</span>`;
+        return `<button class="opt ${cls}" data-o="${esc(o)}" ${answered ? "disabled" : ""}>${ico}<span>${esc(o)}</span></button>`;
+      }).join("")}
+    </div>
+    ${answered ? `<div class="btns" style="margin-top:16px"><button class="btn main" id="nextBtn">Volgende</button></div>` : ""}`;
+  if (answered){ $("#nextBtn").onclick = grade; $("#nextBtn").focus({preventScroll:true}); }
+  else document.querySelectorAll(".opt").forEach(b => b.onclick = () => choose(b.dataset.o));
 }
-function reveal(){ shown = true; drawCard(); $("#yes").focus({preventScroll:true}); }
-function grade(ok){
-  if (ok) done++;
+function choose(o){ if (picked === null){ picked = o; drawCard(); } }
+function grade(){
+  if (picked === A(cur)) done++;
   else { missed.add(cur); queue.splice(Math.min(queue.length, 3), 0, cur); } // komt snel terug
   next();
 }
@@ -389,9 +412,7 @@ function matchEnd(){
 
 document.addEventListener("keydown", e => {
   if (mode !== "cards" || !cur || !$("#card")) return;
-  if (!shown && (e.key === " " || e.key === "Enter")){ e.preventDefault(); reveal(); }
-  else if (shown && e.key === "ArrowLeft") grade(false);
-  else if (shown && e.key === "ArrowRight") grade(true);
+  if (picked === null && "1234".includes(e.key) && e.key) choose(opts[+e.key - 1]);
 });
 
 renderDir(); start();
