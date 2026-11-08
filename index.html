@@ -212,8 +212,10 @@ function startCards(){
   if (blocks.length > 1 && blocks.at(-1).length < 5) blocks.at(-2).push(...blocks.pop()); // geen mini-blokje aan het eind
   bi = 0; startBlock();
 }
-// een blok is pas klaar als je elk woord één keer goed hebt; foute woorden komen binnen het blok terug
-function startBlock(){ queue = shuffle(blocks[bi]); bDone = 0; bMissed = new Set(); next(); }
+// een blok is pas klaar als je elk woord 3x achter elkaar goed hebt; een fout zet de teller van dat woord terug op 0
+const STREAK = 3;
+let streak;
+function startBlock(){ queue = shuffle(blocks[bi]); bDone = 0; bMissed = new Set(); streak = new Map(); next(); }
 function next(){
   if (!queue.length) return blockEnd();
   cur = queue.shift(); picked = null; opts = choices(cur); drawCard();
@@ -227,7 +229,7 @@ function choices(w){
 }
 function drawCard(){
   setMeta("Blok " + (bi + 1) + " van " + blocks.length + " · " + bDone + "/" + blocks[bi].length + " goed",
-    bMissed.size ? bMissed.size + " fout" : "", bDone / blocks[bi].length * 100);
+    bMissed.size ? bMissed.size + " fout" : "", [...streak.values()].reduce((a, b) => a + b, 0) / (blocks[bi].length * STREAK) * 100);
   const answered = picked !== null, right = A(cur);
   $("#stage").innerHTML = `
     <div class="card" id="card">
@@ -247,8 +249,14 @@ function drawCard(){
 }
 function choose(o){ if (picked === null){ picked = o; drawCard(); } }
 function grade(){
-  if (picked === A(cur)){ done++; bDone++; }
-  else { missed.add(cur); bMissed.add(cur); queue.splice(Math.min(queue.length, 3), 0, cur); } // komt snel terug
+  if (picked === A(cur)){
+    const s = (streak.get(cur) || 0) + 1; streak.set(cur, s);
+    if (s >= STREAK){ done++; bDone++; }
+    else queue.splice(Math.min(queue.length, 4 + (Math.random() * 3 | 0)), 0, cur); // later in het blok nog eens
+  } else {
+    streak.set(cur, 0); missed.add(cur); bMissed.add(cur);
+    queue.splice(Math.min(queue.length, 3), 0, cur); // komt snel terug
+  }
   next();
 }
 function blockEnd(){
