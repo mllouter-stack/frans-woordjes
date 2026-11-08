@@ -97,55 +97,73 @@ select,.pill{height:44px;padding:0 14px;border-radius:12px;border:1.5px solid va
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
 /* ---------- restaurant ---------- */
-:root{--coin:#b45309;--coin-soft:#fef3c7;--wood:#f5ebdd;--wood-line:#eadbc5}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--coin:#fbbf24;--coin-soft:#3a2c0e;--wood:#221d2b;--wood-line:#262030}}
-:root[data-theme="dark"]{--coin:#fbbf24;--coin-soft:#3a2c0e;--wood:#221d2b;--wood-line:#262030}
-.resto{display:flex;flex-direction:column;gap:10px}
-.hud{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.hud .name{font-family:"Baloo 2",sans-serif;font-size:20px;line-height:1.1;margin-right:auto}
-.hud .name small{display:block;white-space:nowrap;font:600 13px system-ui,sans-serif;color:var(--muted)}
-.chip{height:34px;padding:0 10px;border-radius:999px;background:var(--card);border:1.5px solid var(--border);display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+:root{--coin:#b45309;--coin-soft:#fef3c7;--clay-shadow:0 4px 0 rgba(76,29,149,.18),0 8px 18px rgba(76,29,149,.10)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--coin:#fbbf24;--coin-soft:#3a2c0e;--clay-shadow:0 4px 0 rgba(0,0,0,.45),0 8px 18px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--coin:#fbbf24;--coin-soft:#3a2c0e;--clay-shadow:0 4px 0 rgba(0,0,0,.45),0 8px 18px rgba(0,0,0,.3)}
+body.ingame .top,body.ingame .tabs{display:none}
+body.ingame .wrap{gap:10px;padding-top:12px}
+.resto{display:flex;flex-direction:column;gap:14px}
+.ghud{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.gname{font-family:"Baloo 2",sans-serif;font-size:19px;line-height:1.05;margin-right:auto;min-width:0}
+.gname small{display:block;font:600 13px system-ui,sans-serif;color:var(--muted)}
+.resto>.ghud .chip.coin{margin-right:auto}
+.chip{height:40px;min-width:40px;padding:0 12px;border-radius:999px;background:var(--card);border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
 .chip.coin{color:var(--coin);background:var(--coin-soft);border-color:transparent}
-.chip.combo{color:var(--primary);background:var(--primary-soft);border-color:transparent}
+.ibtn{width:44px;height:44px;padding:0;box-shadow:var(--clay-shadow)}
+.ibtn:active{transform:translateY(2px);box-shadow:none}
 .stars{display:inline-flex;gap:1px;color:var(--coin)}
-.lbl{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 -4px}
-.floor{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px;border-radius:20px;background:var(--wood);background-image:repeating-linear-gradient(90deg,transparent 0 46px,var(--wood-line) 46px 48px)}
-.seat{position:relative;min-width:0;min-height:122px;border-radius:14px;background:var(--card);border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;padding:8px 6px 10px;text-align:center;transition:border-color .2s,transform .1s}
-.seat.empty{background:transparent;border-style:dashed;color:var(--muted);justify-content:center;font-size:14px}
-.seat.ask{border-color:var(--primary);cursor:pointer}
-.seat.ask:active{transform:scale(.97)}
-.seat.ask .bub{background:var(--primary);color:var(--on-primary)}
-.seat.ask .bub::after{border-top-color:var(--primary)}
-.bub{position:relative;max-width:100%;padding:5px 8px;border-radius:12px;background:var(--primary-soft);font-weight:700;font-size:14px;line-height:1.2;margin-bottom:6px;word-break:break-word}
-.bub::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-bottom:0;border-top-color:var(--primary-soft)}
-.bub small{display:block;font-weight:600;font-size:11px;opacity:.8}
-.pat{width:100%;height:6px;border-radius:9px;background:var(--border);overflow:hidden}
-.pat i{display:block;height:100%;background:var(--good);transition:background .3s}
-.pat i.mid{background:var(--coin)}
-.pat i.low{background:var(--bad)}
-.pop{position:absolute;top:8px;right:10px;font-weight:800;color:var(--coin);animation:up 1.2s ease-out forwards;pointer-events:none}
-@keyframes up{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-24px)}}
-.kitchen{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stove{min-height:96px;border-radius:16px;background:var(--card);border:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 8px;font-size:13px;font-weight:600;color:var(--muted);text-align:center}
-.stove.locked{border-style:dashed;opacity:.55}
-.stove.ready{border-color:var(--good);background:var(--good-soft);color:var(--good);cursor:pointer;animation:glow 1s ease-in-out infinite alternate}
-.stove.ready:active{transform:scale(.97)}
-@keyframes glow{to{box-shadow:0 0 0 4px var(--good-soft)}}
-.orders{font-size:14px;color:var(--muted);min-height:20px}
-.sheetbg{position:fixed;inset:0;background:rgba(15,10,30,.45);display:flex;align-items:flex-end;justify-content:center;z-index:10;animation:fade .15s}
-.sheet{width:100%;max-width:560px;background:var(--bg);border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));animation:rise .2s ease-out}
-.sheet .q{text-align:center;margin:4px 0 2px}
+.btn.clay{box-shadow:var(--clay-shadow);border:2px solid rgba(255,255,255,.25)}
+.btn.clay:active{transform:translateY(3px);box-shadow:none}
+.lbl{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:4px 0 -6px}
+.place{border-radius:22px;background:var(--card);border:2px solid var(--border);overflow:hidden;box-shadow:var(--clay-shadow)}
+.place.shut{opacity:.6}
+.band{padding:12px 16px;color:#fff;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.band b{font-family:"Baloo 2",sans-serif;font-size:20px;line-height:1.1}
+.band span{font-size:13px;font-weight:700;opacity:.9}
+.lvls{display:flex;flex-wrap:wrap;gap:10px;padding:14px}
+.lvl{width:58px;height:64px;border-radius:18px;background:var(--primary-soft);color:var(--primary);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 3px 0 rgba(76,29,149,.2);transition:transform .1s}
+.lvl .n{font-family:"Baloo 2",sans-serif;font-size:22px;line-height:1;font-weight:700;display:flex}
+.lvl .ls{display:flex;color:var(--coin)}
+.lvl.now{background:var(--primary);color:var(--on-primary);animation:bounce 1.4s ease-in-out infinite}
+.lvl.now .ls{color:var(--on-primary)}
+.lvl:disabled{background:var(--border);color:var(--muted);box-shadow:none;cursor:default}
+.lvl:not(:disabled):active{transform:translateY(3px);box-shadow:none}
+@keyframes bounce{50%{transform:translateY(-3px)}}
+.how{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:12px 16px;font-size:15px}
+.how summary{font-weight:800;cursor:pointer;min-height:24px}
+.how ol{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:4px 0}
+.gwrap{display:flex;flex-direction:column;gap:10px}
+.cvbox{position:relative;border-radius:22px;overflow:hidden;box-shadow:var(--clay-shadow);max-width:420px;width:100%;margin:0 auto;background:#000}
+#cv{display:block;width:100%;aspect-ratio:360/560;touch-action:manipulation;cursor:pointer}
+.ghint{margin:0;text-align:center;font-weight:700;font-size:15px;color:var(--muted);min-height:44px}
+.sheetbg{position:fixed;inset:0;background:rgba(15,10,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:10;animation:fade .15s}
+.sheetbg.center{align-items:center;padding:16px}
+.sheet{width:100%;max-width:520px;background:var(--bg);border-radius:26px 26px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));animation:rise .22s ease-out;display:flex;flex-direction:column;gap:6px}
+.sheetbg.center .sheet{border-radius:26px;align-items:center;text-align:center;max-height:calc(100dvh - 32px);overflow:auto}
+.clay-card{border:2px solid var(--border);box-shadow:var(--clay-shadow)}
+.sheet .q{text-align:center;margin:0}
 .sheet .hint{text-align:center;color:var(--muted);font-size:14px;margin:0}
+.sheet .opts{margin-top:8px}
+.tag{align-self:center;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:800;color:#fff;background:#dc2626}
+.tag.t-vip{background:#7c3aed}.tag.t-critic{background:#334155}
+.bigstars{display:flex;gap:6px;color:var(--border)}
+.bigstars span{animation:popin .4s ease-out backwards}
+.bigstars span.on{color:var(--coin)}
+@keyframes popin{from{transform:scale(.3);opacity:0}}
+.end h2{font-family:"Baloo 2",sans-serif;font-size:30px;margin:0}
+.end p{margin:0;color:var(--muted)}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{transform:translateY(40px)}}
 .shop{display:flex;flex-direction:column;gap:8px}
-.item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:var(--card);border:1.5px solid var(--border)}
+.item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:var(--card);border:2px solid var(--border)}
 .item .txt{flex:1;min-width:0}
 .item b{display:block;font-size:16px}
 .item span{display:block;font-size:13px;color:var(--muted)}
-.buy{min-width:84px;height:44px;border-radius:12px;background:var(--coin-soft);color:var(--coin);font-weight:800;padding:0 12px;flex:none}
-.buy:disabled{opacity:.45;cursor:default}
-.buy.max{background:var(--good-soft);color:var(--good)}
+.buy{min-width:86px;height:44px;border-radius:14px;background:var(--coin-soft);color:var(--coin);font-weight:800;padding:0 12px;flex:none;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 3px 0 rgba(180,83,9,.25)}
+.buy:not(:disabled):active{transform:translateY(3px);box-shadow:none}
+.buy:disabled{opacity:.45;cursor:default;box-shadow:none}
+.buy.max{background:var(--good-soft);color:var(--good);opacity:1}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
 .stats div{background:var(--primary-soft);border-radius:14px;padding:10px 6px;text-align:center}
 .stats b{display:block;font-family:"Baloo 2",sans-serif;font-size:24px;line-height:1.1}
@@ -395,250 +413,554 @@ document.addEventListener("keydown", e => {
 });
 
 // ---------- restaurant: Mi Cocina ----------
-// Gasten spreken een woord; vertaal het goed om hun bestelling op te nemen, kook, serveer, verdien geld en bouw je zaak uit.
-// Een dag = een blok van 10 woorden; de dag sluit pas als elk woord 3x achter elkaar goed is.
+// Eigen restaurant-tycoon. Gasten bestellen met een woord; vertaal het, kook het gerecht in stappen, de ober serveert, jij haalt het geld op.
+// Een level = een blok van 10 woorden; het level is klaar als elk woord 3x achter elkaar goed is.
+const CW = 360, CHH = 560, AISLE = 180, DOOR_Y = 600;
+const ST = {fogon:{es:"fogón", nl:"fornuis", de:"het", burn:true}, tabla:{es:"tabla", nl:"snijplank", de:"de", burn:false}, horno:{es:"horno", nl:"oven", de:"de", burn:true}};
+const SLOT = {fogon:[0,1,2], tabla:[3,4], horno:[5]};
 const DISHES = [
-  {id:"tortilla", name:"Tortilla", price:8, cook:6, c:"#f2c14e", c2:"#e09f3e"},
-  {id:"gazpacho", name:"Gazpacho", price:10, cook:5, c:"#e4572e", c2:"#f3a683", cost:0},
-  {id:"croquetas", name:"Croquetas", price:14, cook:8, c:"#c97c3d", c2:"#8c5326", cost:90},
-  {id:"churros", name:"Churros", price:16, cook:7, c:"#d9a05b", c2:"#6b3e26", cost:180},
-  {id:"tacos", name:"Tacos", price:20, cook:9, c:"#f4d35e", c2:"#2a9d8f", cost:320},
-  {id:"paella", name:"Paella", price:32, cook:12, c:"#f6ae2d", c2:"#d1495b", cost:600},
-  {id:"flan", name:"Flan", price:40, cook:10, c:"#f7d08a", c2:"#7f4f24", cost:1000}
+  {id:"tortilla", name:"Tortilla", price:9, steps:[["fogon",5]], c:"#f2c14e", c2:"#d98e1f", r:0},
+  {id:"gazpacho", name:"Gazpacho", price:8, steps:[["tabla",4]], c:"#e4572e", c2:"#7bb662", r:0},
+  {id:"churros", name:"Churros", price:15, steps:[["tabla",3],["fogon",4]], c:"#d9a05b", c2:"#5a3220", r:0, cost:120},
+  {id:"croquetas", name:"Croquetas", price:19, steps:[["tabla",4],["fogon",5]], c:"#c97c3d", c2:"#f1d9a8", r:1, cost:260},
+  {id:"paella", name:"Paella", price:30, steps:[["tabla",4],["fogon",8]], c:"#f6ae2d", c2:"#d1495b", r:1, cost:450},
+  {id:"flan", name:"Flan", price:24, steps:[["horno",6]], c:"#f7d08a", c2:"#8a4b1c", r:2, cost:420},
+  {id:"empanada", name:"Empanada", price:28, steps:[["tabla",4],["horno",7]], c:"#e3b26b", c2:"#a8692c", r:2, cost:600},
+  {id:"pollo", name:"Pollo asado", price:36, steps:[["horno",10]], c:"#c8792f", c2:"#6ea44c", r:2, cost:800}
 ];
-const UPG = {
-  tables:{name:"Extra tafel", desc:"Meer gasten tegelijk", base:2, max:6, cost:[60,160,360,700]},
-  stoves:{name:"Extra fornuis", desc:"Meer gerechten tegelijk koken", base:1, max:3, cost:[140,450]},
-  chef:{name:"Betere kok", desc:"Koken gaat 15% sneller", base:0, max:4, cost:[80,220,480,950]},
-  decor:{name:"Mooiere inrichting", desc:"Gasten wachten 20% langer", base:0, max:3, cost:[110,300,650]},
-  waiter:{name:"Ober", desc:"+15% fooi per gerecht", base:0, max:3, cost:[150,400,850]}
+const UPG = [
+  ["tables", "Extra tafel", "Meer gasten tegelijk", [80,180,380,700], 2, 6],
+  ["fogon", "Extra fornuis", "Bak meer gerechten tegelijk", [150,450], 1, 3],
+  ["tabla", "Extra snijplank", "Snijd twee gerechten tegelijk", [220], 1, 2],
+  ["horno", "Oven", "Nodig voor flan, empanada en kip", [350], 0, 1],
+  ["speed", "Snelle schoenen", "Obers lopen 25% sneller", [100,260,520], 0, 3],
+  ["waiter2", "Tweede ober", "Twee obers serveren tegelijk", [600], 0, 1],
+  ["busser", "Afruimer", "Haalt het geld van de tafels op", [500], 0, 1],
+  ["chef", "Hulpkok", "Start en pakt gerechten zelf", [1100], 0, 1],
+  ["decor", "Inrichting", "Planten en lampen: gasten wachten 15% langer", [120,300,650], 0, 3]
+];
+const PLACES = [
+  {name:"Chiringuito", sub:"Strandtent", f1:"#f3e2b8", f2:"#ecd6a2", wall:"#7cc6d6", tile:"#a7dbe5", pass:"#c98f55", table:"#fbf7ee", band:"#38a3b8"},
+  {name:"Bar de tapas", sub:"In de stad", f1:"#d98b5f", f2:"#cd7d52", wall:"#f1e3c8", tile:"#e6d2ae", pass:"#8a4b2a", table:"#7a4427", band:"#c2552d"},
+  {name:"Restaurante Estrella", sub:"Sterrenrestaurant", f1:"#3d3548", f2:"#362f41", wall:"#2a2433", tile:"#3a3245", pass:"#6b5238", table:"#f4f1ea", band:"#7c3aed"}
+];
+const TABLE_POS = [[95,258],[265,258],[95,352],[265,352],[95,446],[265,446]];
+const SKIN = ["#f1c7a5","#e0a77a","#c68654","#8d5a3b","#5e3b28"], HAIR = ["#2b1d14","#6b4226","#d9a441","#a33b20","#1c1c1c","#8a8a8a"];
+const SHIRT = ["#3b82f6","#10b981","#f97316","#ec4899","#8b5cf6","#14b8a6","#eab308","#64748b"];
+const GTYPE = {
+  normal:{label:"", pat:1, pay:1},
+  haast:{label:"Haast", pat:.6, pay:1.3},
+  vip:{label:"VIP", pat:.9, pay:2},
+  critic:{label:"Recensent", pat:.8, pay:1.2}
 };
-const TIERS = ["Puestito", "Puestito", "Puestito", "Bar de tapas", "Restaurante", "Gran restaurante", "Gran restaurante"];
-const SKIN = ["#f1c7a5", "#e0a77a", "#c68654", "#8d5a3b", "#5e3b28"], HAIR = ["#2b1d14", "#6b4226", "#d9a441", "#a33b20", "#1c1c1c", "#8a8a8a"];
-const SAVEKEY = "micocina-v1";
-
-let S = load(), R = null, raf = 0, lastT = 0, gid = 0;
-function fresh(){ return {coins:0, tables:2, stoves:1, chef:0, decor:0, waiter:0, menu:["tortilla","gazpacho"], rating:3, day:{all:0,"1":0,"2":0}, days:0}; }
-function load(){ try { const s = JSON.parse(localStorage.getItem(SAVEKEY)); if (s && s.menu) return Object.assign(fresh(), s); } catch(e){} return fresh(); }
+const SAVEKEY = "micocina-v2";
+let S = load(), R = null, raf = 0, lastT = 0, uid = 0, ctx = null, AC = null;
+function fresh(){ return {coins:0, menu:["tortilla","gazpacho"], up:{tables:2,fogon:1,tabla:1,horno:0,speed:0,waiter2:0,busser:0,chef:0,decor:0}, stars:{}, rating:3, mute:false}; }
+function load(){ try { const s = JSON.parse(localStorage.getItem(SAVEKEY)); if (s && s.up){ const f = fresh(); f.up = Object.assign(f.up, s.up); return Object.assign(f, s, {up:f.up}); } } catch(e){} return fresh(); }
 function save(){ try { localStorage.setItem(SAVEKEY, JSON.stringify(S)); } catch(e){} }
 
-const STAR = f => `<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.8z" fill="${f ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
-const COIN = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="currentColor" opacity=".25"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 010 3h-3a1.5 1.5 0 000 3h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
-const stars = r => `<span class="stars" aria-label="${r.toFixed(1)} sterren">${[1,2,3,4,5].map(i => STAR(r >= i - .5)).join("")}</span>`;
-function face(g, mood){
-  const m = mood === "happy" ? "M17 30q7 6 14 0" : mood === "angry" ? "M17 33q7-5 14 0" : "M18 31h12";
-  const brow = mood === "angry" ? '<path d="M15 19l6 2M33 19l-6 2" stroke="#3a2a20" stroke-width="2" stroke-linecap="round"/>' : "";
-  return `<svg width="44" height="44" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="26" r="17" fill="${g.skin}"/><path d="M7 24a17 17 0 0134 0q-6-9-17-9T7 24z" fill="${g.hair}"/>${brow}<circle cx="18" cy="25" r="2.2" fill="#2a1d16"/><circle cx="30" cy="25" r="2.2" fill="#2a1d16"/><path d="${m}" fill="none" stroke="#2a1d16" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+// ---- geluid (zelf gesynthetiseerd, geen bestanden) ----
+function tone(f, d = .12, type = "sine", v = .07, when = 0){
+  if (S.mute) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime + when;
+    o.type = type; o.frequency.value = f; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + d);
+    o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + .02);
+  } catch(e){}
 }
-const dishSvg = (d, s = 44) => `<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="30" rx="21" ry="12" fill="#e7e5ef"/><ellipse cx="24" cy="29" rx="15" ry="8" fill="#fff"/><ellipse cx="24" cy="26" rx="11" ry="7" fill="${d.c}"/><circle cx="20" cy="24" r="2" fill="${d.c2}"/><circle cx="27" cy="27" r="2" fill="${d.c2}"/><circle cx="26" cy="22" r="1.6" fill="${d.c2}"/></svg>`;
+const SFX = {
+  bell(){ tone(988,.3); tone(784,.35,"sine",.06,.14); },
+  ok(){ tone(523,.1,"triangle"); tone(784,.16,"triangle",.07,.08); },
+  bad(){ tone(196,.22,"square",.04); },
+  coin(){ tone(1319,.07,"triangle"); tone(1760,.12,"triangle",.06,.06); },
+  ding(){ tone(1047,.2,"triangle",.06); },
+  burn(){ tone(110,.45,"sawtooth",.04); },
+  win(){ [523,659,784,1047].forEach((f,i) => tone(f,.22,"triangle",.07,i*.13)); }
+};
+
+// ---- helpers ----
 const dish = id => DISHES.find(d => d.id === id);
-const lvl = k => S[k] - UPG[k].base;
-const tierName = () => TIERS[S.tables] || TIERS.at(-1);
+const stName = t => ST[t].es;
+const key = li => chap + ":" + li;
 const gameBlocks = () => { const p = pool(), b = []; for (let i = 0; i < p.length; i += BLOCK) b.push(p.slice(i, i + BLOCK)); if (b.length > 1 && b.at(-1).length < 5) b.at(-2).push(...b.pop()); return b; };
+const placeOf = (li, n) => Math.min(2, Math.floor(li * 3 / n));
+const target = li => 280 + li * 55;
+const menuNow = () => S.menu.filter(id => dish(id).steps.every(([t]) => S.up[t] > 0));
+const STARSVG = (f, s = 14) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.8z" fill="${f ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`;
+const COIN = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="currentColor" opacity=".25"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v10M9.5 9.5h4a1.5 1.5 0 010 3h-3a1.5 1.5 0 000 3h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const SOUND = on => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"/>${on ? '<path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/>' : '<path d="M22 9l-6 6M16 9l6 6"/>'}</svg>`;
+const BACK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+const LOCK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
+const ratingStars = r => `<span class="stars" aria-label="Waardering ${r.toFixed(1)} van 5">${[1,2,3,4,5].map(i => STARSVG(r >= i - .5)).join("")}</span>`;
+const dishIcon = (d, s = 40) => `<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="30" rx="21" ry="12" fill="#e7e5ef"/><ellipse cx="24" cy="29" rx="15" ry="8" fill="#fff"/><ellipse cx="24" cy="26" rx="11" ry="7" fill="${d.c}"/><circle cx="20" cy="24" r="2" fill="${d.c2}"/><circle cx="27" cy="27" r="2" fill="${d.c2}"/><circle cx="26" cy="22" r="1.6" fill="${d.c2}"/></svg>`;
 
-function stopGame(){ cancelAnimationFrame(raf); raf = 0; R = null; }
-function startGame(){ stopGame(); lobby(); }
+function stopGame(){ cancelAnimationFrame(raf); raf = 0; R = null; document.body.classList.remove("ingame"); }
+function startGame(){ stopGame(); mapScreen(); }
 
-function hud(){
-  return `<div class="hud"><div class="name">Mi Cocina<small>${tierName()} · dag ${S.days + 1}</small></div>
-    <span class="chip coin">${COIN}<span id="gCoins">${S.coins}</span></span>
-    <span class="chip">${stars(S.rating)}</span>${R ? `<span class="chip combo" id="gCombo">x${combo().toFixed(1)}</span>` : ""}</div>`;
-}
-function lobby(msg = ""){
-  const b = gameBlocks(), di = S.day[chap] % b.length;
-  setMeta("Blok " + (di + 1) + " van " + b.length, b[di].length + " woorden vandaag", 0);
-  $("#stage").innerHTML = `<div class="resto">${hud()}${msg}
-    <div class="btns"><button class="btn main" data-act="open">Open het restaurant</button></div>
-    <p class="tap" style="margin:0">Gasten bestellen met een woord. Kies de goede vertaling om de bestelling op te nemen. Daarna kook je het gerecht, serveer je het en verdien je geld. De dag is voorbij als je elk woord 3 keer achter elkaar goed hebt.</p>
-    ${shopHtml()}</div>`;
-}
-function shopHtml(){
-  const up = Object.entries(UPG).map(([k, u]) => {
-    const l = lvl(k), full = S[k] >= u.max, c = u.cost[l];
-    return `<div class="item"><div class="txt"><b>${u.name}</b><span>${u.desc} · nu ${S[k]}${u.base === 0 ? " / " + u.max : " (max " + u.max + ")"}</span></div>
-      ${full ? `<button class="buy max" disabled>Max</button>` : `<button class="buy" data-buy="${k}" ${S.coins < c ? "disabled" : ""}>€${c}</button>`}</div>`;
+// =================== KAART + WINKEL ===================
+function mapScreen(){
+  const b = gameBlocks(), n = b.length;
+  let next = 0; while (next < n && S.stars[key(next)]) next++;
+  setMeta(Object.keys(S.stars).filter(k => k.startsWith(chap + ":")).length + " van " + n + " levels gehaald", "", (Object.keys(S.stars).filter(k => k.startsWith(chap + ":")).length / n) * 100);
+  const places = PLACES.map((p, pi) => {
+    const lv = b.map((_, i) => i).filter(i => placeOf(i, n) === pi);
+    const open = lv.length && lv[0] <= next;
+    return `<div class="place${open ? "" : " shut"}"><div class="band" style="background:${p.band}"><b>${p.name}</b><span>${p.sub}</span></div>
+      <div class="lvls">${lv.map(i => {
+        const st = S.stars[key(i)] || 0, unlocked = i <= next;
+        return `<button class="lvl${i === next ? " now" : ""}" data-lvl="${i}" ${unlocked ? "" : "disabled"} aria-label="Level ${i + 1}${unlocked ? ", " + st + " sterren" : ", op slot"}">
+          <span class="n">${unlocked ? i + 1 : LOCK}</span>${unlocked ? `<span class="ls">${[1,2,3].map(k => STARSVG(st >= k, 11)).join("")}</span>` : ""}</button>`;
+      }).join("")}</div></div>`;
   }).join("");
-  const menu = DISHES.filter(d => d.cost !== undefined && d.cost > 0).map(d => {
-    const have = S.menu.includes(d.id);
-    return `<div class="item">${dishSvg(d, 40)}<div class="txt"><b>${d.name}</b><span>€${d.price} per bord · ${d.cook} sec koken</span></div>
-      ${have ? `<button class="buy max" disabled>Op menu</button>` : `<button class="buy" data-dish="${d.id}" ${S.coins < d.cost ? "disabled" : ""}>€${d.cost}</button>`}</div>`;
+  $("#stage").innerHTML = `<div class="resto">
+    <div class="ghud">${hudChips()}</div>
+    ${next < n ? `<button class="btn main clay" data-lvl="${next}">Speel level ${next + 1}</button>` : `<p class="tap" style="margin:0">Alle levels gehaald. Speel ze opnieuw voor 3 sterren.</p>`}
+    ${places}
+    <details class="how"><summary>Zo speel je</summary><ol>
+      <li>Een gast met een <b>!</b> wil bestellen. Tik op de gast en kies de goede vertaling.</li>
+      <li>Het bonnetje komt in de keuken. Tik op een vrij fornuis of een vrije snijplank om de volgende stap te maken.</li>
+      <li>Is een stap klaar, tik er dan op. Wacht niet te lang, want op het fornuis en in de oven brandt het aan.</li>
+      <li>De ober brengt het eten. Tik daarna op het geld op de tafel.</li>
+      <li>Het level is klaar als je elk woord 3 keer achter elkaar goed hebt. Haal het geld-doel en laat niemand weglopen voor 3 sterren.</li></ol></details>
+    ${shopHtml(next, n)}</div>`;
+}
+function hudChips(){
+  return `<span class="chip coin">${COIN}<span id="gCoins">${S.coins}</span></span><span class="chip">${ratingStars(S.rating)}</span>
+    <button class="chip ibtn" data-act="mute" aria-label="${S.mute ? "Geluid aan" : "Geluid uit"}">${SOUND(!S.mute)}</button>`;
+}
+function shopHtml(next, n){
+  const maxPlace = placeOf(Math.min(next, n - 1), n);
+  const up = UPG.map(([k, name, desc, cost, base, max]) => {
+    const l = S.up[k] - base, full = S.up[k] >= max, c = cost[l];
+    return `<div class="item"><div class="txt"><b>${name}</b><span>${desc}${max - base > 1 ? " · " + (S.up[k] - base) + "/" + (max - base) : ""}</span></div>
+      ${full ? `<button class="buy max" disabled>${max - base > 1 ? "Max" : "Gekocht"}</button>` : `<button class="buy" data-buy="${k}" ${S.coins < c ? "disabled" : ""}>€${c}</button>`}</div>`;
+  }).join("");
+  const menu = DISHES.filter(d => d.cost).map(d => {
+    const have = S.menu.includes(d.id), locked = d.r > maxPlace;
+    const need = d.steps.map(s => ST[s[0]].nl).filter((v, i, a) => a.indexOf(v) === i).join(" + ");
+    return `<div class="item">${dishIcon(d)}<div class="txt"><b>${d.name}</b><span>€${d.price} · ${need}${locked ? " · vanaf " + PLACES[d.r].name : ""}</span></div>
+      ${have ? `<button class="buy max" disabled>Op menu</button>` : `<button class="buy" data-dish="${d.id}" ${S.coins < d.cost || locked ? "disabled" : ""}>${locked ? LOCK : "€" + d.cost}</button>`}</div>`;
   }).join("");
   return `<div class="lbl">Uitbreiden</div><div class="shop">${up}</div><div class="lbl">Menukaart</div><div class="shop">${menu}</div>`;
 }
-
-function openDay(){
-  const b = gameBlocks(), di = S.day[chap] % b.length;
-  R = {block:b[di], di, nb:b.length, streak:new Map(), seen:new Map(), tick:0, seats:Array(S.tables).fill(null),
-       stoves:Array.from({length:S.stoves}, () => null), orders:[], spawn:.4, closing:false, sheet:null,
-       earned:0, served:0, lost:0, right:0, wrong:0, missed:new Set(), cmb:0};
-  lastT = performance.now(); drawGame(); raf = requestAnimationFrame(loop);
+function buy(k){
+  const u = UPG.find(x => x[0] === k), c = u[3][S.up[k] - u[4]];
+  if (S.up[k] >= u[5] || S.coins < c) return;
+  S.coins -= c; S.up[k]++; SFX.coin(); save(); mapScreen();
 }
-const combo = () => 1 + Math.min(R ? R.cmb : 0, 10) * 0.1;
-const patSec = () => 30 * (1 + 0.2 * S.decor);
-const cookSec = d => d.cook * (1 - 0.15 * S.chef);
+function buyDish(id){
+  const d = dish(id); if (S.menu.includes(id) || S.coins < d.cost) return;
+  S.coins -= d.cost; S.menu.push(id); SFX.coin(); save(); mapScreen();
+}
+
+// =================== LEVEL ===================
+function openLevel(li){
+  stopGame();
+  const b = gameBlocks(), n = b.length, pi = placeOf(li, n);
+  document.body.classList.add("ingame");
+  R = {li, n, pi, P:PLACES[pi], block:b[li], streak:new Map(), seen:new Map(), tick:0,
+    tables:TABLE_POS.slice(0, S.up.tables).map(([x, y]) => ({x, y, g:null, cash:0, ct:0})),
+    stations:[], tickets:[], pass:[], guests:[], pops:[], smoke:[],
+    waiters:[{x:150, y:184, hx:150, hy:184, path:[], tk:null, carry:null, ph:"idle", walk:0}],
+    chef:{x:180, y:126, path:[], walk:0},
+    spawnT:.6, closing:false, sheet:null, over:false, time:0, helpT:0, hintT:0,
+    earned:0, served:0, lost:0, burnt:0, right:0, wrong:0, missed:new Set(), cmb:0};
+  if (S.up.waiter2) R.waiters.push({x:210, y:184, hx:210, hy:184, path:[], tk:null, carry:null, ph:"idle", walk:0});
+  for (const t of ["fogon","tabla","horno"]) SLOT[t].forEach((s, i) => R.stations.push({type:t, slot:s, x:34 + s * 58.4, owned:i < S.up[t], job:null}));
+  $("#stage").innerHTML = `<div class="gwrap">
+    <div class="ghud"><button class="chip ibtn" data-act="quit" aria-label="Terug naar de kaart">${BACK}</button>
+      <div class="gname">${R.P.name}<small>Level ${li + 1} · doel €${target(li)}</small></div>${hudChips()}</div>
+    <div class="cvbox"><canvas id="cv" width="${CW}" height="${CHH}" aria-label="Restaurant. Gebruik de knoppen of tik op gasten, fornuizen en geld."></canvas><div id="gOver"></div></div>
+    <p class="ghint" id="gHint" aria-live="polite"></p></div>`;
+  const cv = $("#cv"), dpr = Math.min(3, window.devicePixelRatio || 1);
+  cv.width = CW * dpr; cv.height = CHH * dpr; ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  cv.addEventListener("pointerdown", onCanvas);
+  meta(); lastT = performance.now(); raf = requestAnimationFrame(loop);
+}
+function meta(){
+  const known = R.block.filter(w => (R.streak.get(w) || 0) >= STREAK).length;
+  setMeta(known + "/" + R.block.length + " woorden gekend", "€" + R.earned + " / €" + target(R.li), progress() * 100);
+}
+const progress = () => R.block.reduce((a, w) => a + Math.min(STREAK, R.streak.get(w) || 0), 0) / (R.block.length * STREAK);
+const combo = () => 1 + Math.min(R.cmb, 10) * .08;
+const patSec = g => 34 * (1 + .15 * S.up.decor) * GTYPE[g.type].pat;
+const wspeed = () => 95 * (1 + .25 * S.up.speed);
+const guestById = id => R.guests.find(g => g.id === id);
 
 function pickWord(not){
-  const onFloor = new Set(R.seats.filter(g => g && g.state === "ask").map(g => g.word));
-  const c = R.block.filter(w => (R.streak.get(w) || 0) < STREAK && !onFloor.has(w) && w !== not);
+  const busy = new Set(R.guests.filter(g => g.state === "in" || g.state === "order").map(g => g.word));
+  const c = R.block.filter(w => (R.streak.get(w) || 0) < STREAK && !busy.has(w) && w !== not);
   if (!c.length) return null;
-  c.sort((a, b) => (R.seen.get(a) ?? -99) - (R.seen.get(b) ?? -99)); // langst niet gezien eerst
+  c.sort((a, b) => (R.seen.get(a) ?? -99) - (R.seen.get(b) ?? -99));
   return c[Math.random() * Math.min(3, c.length) | 0];
 }
-function spawn(){
-  const i = R.seats.indexOf(null), w = pickWord();
-  if (i < 0 || !w) return;
-  R.seats[i] = {id:++gid, seat:i, word:w, state:"ask", pat:1, skin:SKIN[Math.random() * 5 | 0], hair:HAIR[Math.random() * 6 | 0]};
-  drawGame();
+function spawnGuest(){
+  const ti = R.tables.findIndex(t => !t.g && !t.cash); if (ti < 0) return false;
+  const w = pickWord(); if (!w) return false;
+  const r = Math.random(), type = R.pi >= 1 && r < .1 ? "vip" : R.pi >= 1 && r < .16 ? "critic" : r < .34 ? "haast" : "normal";
+  const t = R.tables[ti], sy = t.y - 24;
+  const g = {id:++uid, type, word:w, state:"in", x:AISLE + (Math.random() * 10 - 5), y:DOOR_Y, path:[[AISLE, sy], [t.x, sy]], table:ti, pat:1,
+    skin:SKIN[Math.random() * 5 | 0], hair:HAIR[Math.random() * 6 | 0], shirt:SHIRT[Math.random() * 8 | 0], walk:0, eat:0};
+  t.g = g.id; R.guests.push(g); SFX.bell(); return true;
+}
+function routeTo(e, x, y){ e.path = [[AISLE, e.y], [AISLE, y], [x, y]]; }
+function move(e, dt, sp){
+  if (!e.path.length) return false;
+  const [tx, ty] = e.path[0], dx = tx - e.x, dy = ty - e.y, d = Math.hypot(dx, dy), s = sp * dt;
+  if (d <= s){ e.x = tx; e.y = ty; e.path.shift(); } else { e.x += dx / d * s; e.y += dy / d * s; }
+  e.walk += dt;
+  return !e.path.length;
+}
+function pop(x, y, txt, col){ R.pops.push({x, y, txt, col, t:0}); }
+
+function guestLeave(g, angry){
+  const t = R.tables[g.table]; if (t && t.g === g.id) t.g = null;
+  for (const tk of R.tickets.filter(k => k.g === g.id)){
+    R.stations.forEach(s => { if (s.job && s.job.tk === tk) s.job = null; });
+    R.pass = R.pass.filter(k => k !== tk);
+    R.waiters.forEach(w => { if (w.tk === tk){ w.tk = null; w.carry = null; w.ph = "idle"; } });
+  }
+  R.tickets = R.tickets.filter(k => k.g !== g.id);
+  g.state = "out"; g.path = [[AISLE, g.y], [AISLE, DOOR_Y + 20]];
+  if (angry){
+    R.lost++; R.cmb = 0; S.rating = Math.max(1, S.rating - (g.type === "critic" ? .7 : .25));
+    pop(g.x, g.y - 60, g.type === "critic" ? "Slechte recensie" : "Weg!", "#dc2626"); SFX.bad();
+  }
 }
 function loop(t){
   if (!R) return;
   const dt = Math.min(.1, (t - lastT) / 1000); lastT = t;
-  if (!R.sheet) step(dt);
-  raf = requestAnimationFrame(loop);
+  if (!R.sheet && !R.over) step(dt);
+  draw(); raf = requestAnimationFrame(loop);
 }
 function step(dt){
-  let dirty = false;
-  if (!R.closing && (R.spawn -= dt) <= 0){ R.spawn = (2.5 + Math.random() * 3) / (0.6 + S.rating * 0.12); spawn(); }
-  for (const g of R.seats) if (g){
-    if (g.state === "eat"){ if ((g.eat -= dt) <= 0){ R.seats[g.seat] = null; dirty = true; } continue; }
-    g.pat -= dt / patSec() * (g.state === "wait" ? 0.55 : 1);
-    if (g.pat <= 0){ // gast loopt boos weg
-      R.lost++; R.cmb = 0; S.rating = Math.max(1, S.rating - 0.25);
-      R.seats[g.seat] = null; R.orders = R.orders.filter(o => o !== g.id);
-      R.stoves = R.stoves.map(s => s && s.gid === g.id ? null : s); dirty = true; continue;
+  R.time += dt;
+  if (!R.closing && (R.spawnT -= dt) <= 0) R.spawnT = spawnGuest() ? (3 + Math.random() * 3) / (.7 + S.rating * .1) : .5;
+  // gasten
+  for (const g of R.guests.slice()){
+    const arrived = move(g, dt, 70);
+    if (g.state === "in" && arrived){ g.state = "order"; g.walk = 0; }
+    else if (g.state === "out" && arrived){ R.guests = R.guests.filter(x => x !== g); continue; }
+    if (g.state === "order" || g.state === "food"){
+      g.pat -= dt / patSec(g) * (g.state === "food" ? .5 : 1);
+      if (g.pat <= 0) guestLeave(g, true);
+    } else if (g.state === "eat" && (g.eat -= dt) <= 0){
+      const d = dish(g.dish), t = R.tables[g.table];
+      const pay = Math.round(d.price * GTYPE[g.type].pay * g.mul * (.75 + .45 * g.pat + (g.fast ? .15 : 0)) * (1 + (S.up.decor * .05)));
+      t.cash += pay; R.served++;
+      S.rating = Math.min(5, S.rating + (g.type === "critic" ? .45 : .06));
+      if (g.type === "critic") pop(t.x, t.y - 70, "Goede recensie!", "#047857");
+      guestLeave(g, false);
     }
-    const el = document.querySelector(`[data-pat="${g.id}"]`);
-    if (el){ el.style.width = g.pat * 100 + "%"; el.className = g.pat < .3 ? "low" : g.pat < .6 ? "mid" : ""; }
   }
-  R.stoves.forEach((s, i) => {
-    if (!s){ if (R.orders.length){ const g = R.seats.find(x => x && x.id === R.orders[0]); R.orders.shift(); if (g){ R.stoves[i] = {gid:g.id, d:g.dish, t:0, dur:cookSec(dish(g.dish)), ready:false}; dirty = true; } } return; }
-    if (s.ready) return;
-    s.t += dt; if (s.t >= s.dur){ s.ready = true; dirty = true; }
-    const el = document.querySelector(`[data-cook="${i}"]`); if (el) el.style.width = Math.min(1, s.t / s.dur) * 100 + "%";
-  });
+  // keuken
+  for (const s of R.stations){
+    const j = s.job; if (!j) continue;
+    if (j.st === "cook"){ j.t += dt; if (j.t >= j.dur){ j.st = "ready"; j.bt = 0; SFX.ding(); } }
+    else if (ST[s.type].burn){
+      j.bt += dt;
+      if (j.bt > 6.5 && Math.random() < dt * 6) R.smoke.push({x:s.x + (Math.random() * 16 - 8), y:70, t:0});
+      if (j.bt > 10){ // aangebrand: deze stap moet opnieuw
+        j.tk.state = "queue"; s.job = null; R.burnt++; SFX.burn(); pop(s.x, 60, "Aangebrand!", "#dc2626");
+      }
+    }
+  }
+  if (S.up.chef && (R.helpT -= dt) <= 0){
+    R.helpT = .8;
+    const s = R.stations.find(s => s.job && s.job.st === "ready") || R.stations.find(s => s.owned && !s.job && nextTicket(s.type));
+    if (s) tapStation(s, true);
+  }
+  move(R.chef, dt, 170);
+  // obers
+  for (const w of R.waiters){
+    if (w.ph === "idle"){
+      const tk = R.pass.find(k => !k.w);
+      if (tk){ tk.w = w; w.tk = tk; w.ph = "pick"; w.path = [[AISLE, w.y < 200 ? w.y : 184], [AISLE, 184], [passX(tk), 178]]; }
+      else if (!w.path.length && (w.x !== w.hx || w.y !== w.hy)) routeTo(w, w.hx, w.hy);
+    }
+    const arrived = move(w, dt, wspeed());
+    if (!arrived) continue;
+    if (w.ph === "pick"){
+      const tk = w.tk, g = tk && guestById(tk.g);
+      R.pass = R.pass.filter(k => k !== tk);
+      if (!g){ w.ph = "idle"; w.tk = null; continue; }
+      const t = R.tables[g.table]; w.carry = tk.dish; w.ph = "serve";
+      w.path = [[AISLE, 184], [AISLE, t.y + 8], [t.x < AISLE ? t.x + 50 : t.x - 50, t.y + 8]];
+    } else if (w.ph === "serve"){
+      const tk = w.tk, g = tk && guestById(tk.g);
+      if (g && g.state === "food"){ g.state = "eat"; g.eat = 3.5; g.dish = tk.dish; }
+      R.tickets = R.tickets.filter(k => k !== tk);
+      w.tk = null; w.carry = null; w.ph = "idle";
+    }
+  }
+  // geld ophalen door de afruimer
+  if (S.up.busser) for (const t of R.tables) if (t.cash && (t.ct += dt) > 1.4) collect(t);
+  for (const p of R.pops) p.t += dt; R.pops = R.pops.filter(p => p.t < 1.4);
+  for (const s of R.smoke) s.t += dt; R.smoke = R.smoke.filter(s => s.t < 1.2);
   if (R.closing){
-    R.seats.forEach((g, i) => { if (g && g.state === "ask"){ R.seats[i] = null; dirty = true; } });
-    if (R.seats.every(g => !g)) return dayEnd();
+    for (const g of R.guests.slice()) if (g.state === "in" || g.state === "order") guestLeave(g, false);
+    if (!R.guests.length){ R.tables.forEach(t => t.cash && collect(t)); return levelEnd(); }
   }
-  if (dirty) drawGame();
+  if ((R.hintT -= dt) <= 0){ R.hintT = .4; hint(); }
 }
-function progress(){ return R.block.reduce((a, w) => a + Math.min(STREAK, R.streak.get(w) || 0), 0) / (R.block.length * STREAK); }
-function drawGame(){
-  const known = R.block.filter(w => (R.streak.get(w) || 0) >= STREAK).length;
-  setMeta("Dag " + (S.days + 1) + " · blok " + (R.di + 1) + " van " + R.nb, known + "/" + R.block.length + " woorden gekend", progress() * 100);
-  const seats = R.seats.map((g, i) => {
-    if (!g) return `<div class="seat empty">${R.closing ? "Gesloten" : "Vrije tafel"}</div>`;
-    const d = g.dish && dish(g.dish);
-    const bub = g.state === "ask" ? `<div class="bub">${esc(Q(g.word))}<small>tik hier</small></div>`
-      : g.state === "wait" ? `<div class="bub">${esc(d.name)}<small>wacht</small></div>`
-      : `<div class="bub">¡Gracias!</div>`;
-    const mood = g.state === "eat" ? "happy" : g.pat < .3 ? "angry" : "neutral";
-    return `<div class="seat ${g.state}" ${g.state === "ask" ? `data-act="ask" data-id="${g.id}" role="button" tabindex="0" aria-label="Gast zegt ${esc(Q(g.word))}"` : ""}>
-      ${g.pop ? `<span class="pop">+€${g.pop}</span>` : ""}${bub}${face(g, mood)}
-      ${g.state !== "eat" ? `<div class="pat"><i data-pat="${g.id}" style="width:${g.pat * 100}%"></i></div>` : ""}</div>`;
-  }).join("");
-  const stoves = [0, 1, 2].map(i => {
-    if (i >= R.stoves.length) return `<div class="stove locked">Fornuis ${i + 1}<br>nog niet gekocht</div>`;
-    const s = R.stoves[i];
-    if (!s) return `<div class="stove">Fornuis ${i + 1}<br>leeg</div>`;
-    const d = dish(s.d);
-    return s.ready ? `<button class="stove ready" data-act="serve" data-i="${i}">${dishSvg(d)}Serveer ${esc(d.name)}</button>`
-      : `<div class="stove">${dishSvg(d)}${esc(d.name)}<div class="pat"><i data-cook="${i}" style="width:${s.t / s.dur * 100}%;background:var(--coin)"></i></div></div>`;
-  }).join("");
-  const waiting = R.orders.length ? R.orders.length + " bestelling" + (R.orders.length > 1 ? "en" : "") + " wacht op een vrij fornuis" : "";
-  let sheet = "";
-  if (R.sheet){
-    const {g, opts, picked} = R.sheet, ans = A(g.word);
-    sheet = `<div class="sheetbg" data-act="close"><div class="sheet" role="dialog" aria-label="Wat zegt de gast?">
-      <p class="hint">De gast zegt:</p><div class="q">${esc(Q(g.word))}</div>
-      <p class="hint">${picked === null ? "Wat betekent dat?" : picked === ans ? "¡Perfecto! Bestelling genoteerd." : "Bijna. Het goede antwoord is groen."}</p>
-      <div class="opts">${opts.map((o, i) => {
-        const cls = picked === null ? "" : o === ans ? "ok" : o === picked ? "no" : "dim";
-        const mark = cls === "ok" ? ICON.check : cls === "no" ? ICON.x : `<span class="num">${i + 1}</span>`;
-        return `<button class="opt ${cls}" data-opt="${i}" ${picked !== null ? "disabled" : ""}>${mark}${esc(o)}</button>`;
-      }).join("")}</div></div></div>`;
+const passX = tk => 60 + Math.max(0, R.pass.indexOf(tk)) * 48;
+function nextTicket(type){ return R.tickets.find(k => k.state === "queue" && dish(k.dish).steps[k.step][0] === type); }
+function tapStation(s, auto){
+  if (!s.owned) return auto || setHint((s.type === "fogon" ? "Dit " : "Deze ") + ST[s.type].nl + " heb je nog niet. Koop het in de winkel.");
+  const j = s.job;
+  if (j){
+    if (j.st !== "ready") return;
+    const tk = j.tk; s.job = null; tk.step++;
+    if (tk.step >= dish(tk.dish).steps.length){ tk.state = "pass"; R.pass.push(tk); } else tk.state = "queue";
+    R.chef.path = [[s.x, 126]]; if (!auto) SFX.ok(); return;
   }
-  $("#stage").innerHTML = `<div class="resto">${hud()}<div class="floor" aria-label="Eetzaal">${seats}</div>
-    <div class="kitchen" aria-label="Keuken">${stoves}</div><div class="orders">${waiting}</div></div>${sheet}`;
-  for (const g of R.seats) if (g) g.pop = 0;
+  const tk = nextTicket(s.type);
+  if (!tk) return auto || setHint("Er wacht niets op " + ST[s.type].de + " " + ST[s.type].nl + ".");
+  const [, sec] = dish(tk.dish).steps[tk.step];
+  tk.state = "busy"; s.job = {tk, t:0, dur:sec, st:"cook", bt:0}; R.chef.path = [[s.x, 126]];
 }
-function ask(id){
-  const g = R.seats.find(x => x && x.id === id); if (!g || g.state !== "ask") return;
-  R.sheet = {g, opts:choices(g.word), picked:null, t0:performance.now()}; drawGame();
-  $(".sheet .opt")?.focus();
+function collect(t){
+  if (!t.cash) return;
+  S.coins += t.cash; R.earned += t.cash; pop(t.x, t.y - 10, "+€" + t.cash, "#b45309"); SFX.coin();
+  t.cash = 0; t.ct = 0; save(); const c = $("#gCoins"); if (c) c.textContent = S.coins; meta();
+}
+let hintLock = 0;
+function setHint(s){ hintLock = performance.now() + 2200; const h = $("#gHint"); if (h) h.textContent = s; }
+function hint(){
+  if (performance.now() < hintLock) return;
+  const burning = R.stations.find(s => s.job && s.job.st === "ready" && ST[s.type].burn && s.job.bt > 5);
+  const ready = R.stations.find(s => s.job && s.job.st === "ready");
+  const q = R.tickets.find(k => k.state === "queue");
+  const free = q && R.stations.find(s => s.owned && !s.job && s.type === dish(q.dish).steps[q.step][0]);
+  const cash = R.tables.find(t => t.cash);
+  const ask = R.guests.find(g => g.state === "order");
+  const s = burning ? "Snel! Er brandt iets aan op " + ST[burning.type].de + " " + ST[burning.type].nl + ". Tik erop."
+    : ready ? "Klaar op " + ST[ready.type].de + " " + ST[ready.type].nl + ". Tik erop."
+    : free ? "Tik op " + (free.type === "fogon" ? "een vrij " : "een vrije ") + ST[free.type].nl + " voor de " + dish(q.dish).name.toLowerCase() + "."
+    : cash ? "Tik op het geld op de tafel."
+    : ask ? "Tik op de gast met een ! om de bestelling op te nemen."
+    : R.closing ? "Alle woorden gekend. De laatste gasten worden bediend." : "Wachten op gasten...";
+  const h = $("#gHint"); if (h && h.textContent !== s) h.textContent = s;
+}
+
+// ---- tikken op het canvas ----
+function onCanvas(e){
+  if (!R || R.sheet || R.over) return;
+  const r = e.currentTarget.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * CW, y = (e.clientY - r.top) / r.height * CHH;
+  if (y > 40 && y < 118){ const s = R.stations.find(s => Math.abs(s.x - x) < 29); if (s) return tapStation(s); }
+  const t = R.tables.find(t => t.cash && Math.abs(t.x - x) < 44 && Math.abs(t.y - y) < 38); if (t) return collect(t);
+  const g = R.guests.filter(g => g.state === "order").find(g => Math.abs(g.x - x) < 30 && y > g.y - 70 && y < g.y + 30);
+  if (g) return askGuest(g);
+}
+function askGuest(g){
+  R.sheet = {g, opts:choices(g.word), picked:null, t0:performance.now()}; drawSheet();
+  $("#gOver .opt")?.focus();
+}
+function drawSheet(){
+  const sh = R.sheet, o = $("#gOver"); if (!sh){ o.innerHTML = ""; return; }
+  const {g, opts, picked} = sh, ans = A(g.word), ty = GTYPE[g.type];
+  o.innerHTML = `<div class="sheetbg" data-act="close"><div class="sheet clay-card" role="dialog" aria-label="Bestelling opnemen">
+    ${ty.label ? `<span class="tag t-${g.type}">${ty.label}${g.type === "vip" ? " · dubbel geld" : g.type === "critic" ? " · telt zwaar voor je sterren" : " · weinig geduld"}</span>` : ""}
+    <p class="hint">De gast zegt:</p><div class="q">${esc(Q(g.word))}</div>
+    <p class="hint">${picked === null ? "Wat betekent dat?" : picked === ans ? "¡Perfecto! Bestelling genoteerd." : "Bijna. Het goede antwoord is groen."}</p>
+    <div class="opts">${opts.map((op, i) => {
+      const cls = picked === null ? "" : op === ans ? "ok" : op === picked ? "no" : "dim";
+      const mark = cls === "ok" ? ICON.check : cls === "no" ? ICON.x : `<span class="num">${i + 1}</span>`;
+      return `<button class="opt ${cls}" data-opt="${i}" ${picked !== null ? "disabled" : ""}>${mark}${esc(op)}</button>`;
+    }).join("")}</div></div></div>`;
 }
 function answer(i){
   const sh = R.sheet; if (!sh || sh.picked !== null) return;
-  const g = sh.g, w = g.word; sh.picked = sh.opts[i];
+  const g = sh.g, w = g.word, ok = (sh.picked = sh.opts[i]) === A(w);
   R.seen.set(w, R.tick++);
-  const ok = sh.picked === A(w);
   if (ok){
     R.right++; R.cmb++; R.streak.set(w, (R.streak.get(w) || 0) + 1);
-    g.fast = performance.now() - sh.t0 < 4000;
-    g.state = "wait"; g.pat = Math.min(1, g.pat + .3);
-    g.dish = S.menu[Math.random() * S.menu.length | 0]; R.orders.push(g.id);
+    g.fast = performance.now() - sh.t0 < 4000; g.mul = combo();
+    const m = menuNow(); g.state = "food"; g.dish = m[Math.random() * m.length | 0]; g.pat = Math.min(1, g.pat + .3);
+    R.tickets.push({id:++uid, g:g.id, dish:g.dish, step:0, state:"queue", w:null}); SFX.ok();
   } else {
-    R.wrong++; R.cmb = 0; R.streak.set(w, 0); R.missed.add(w);
-    g.pat = Math.max(.08, g.pat - .25);
+    R.wrong++; R.cmb = 0; R.streak.set(w, 0); R.missed.add(w); g.pat = Math.max(.08, g.pat - .25); SFX.bad();
   }
-  drawGame();
+  drawSheet(); meta();
   setTimeout(() => {
     if (!R || R.sheet !== sh) return;
-    R.sheet = null;
-    if (!ok){ const nw = pickWord(w); if (nw) g.word = nw; } // gast probeert het met een ander woord; het foute komt later terug
+    R.sheet = null; drawSheet();
+    if (!ok){ const nw = pickWord(w); if (nw) g.word = nw; }
     if (R.block.every(x => (R.streak.get(x) || 0) >= STREAK)) R.closing = true;
-    lastT = performance.now(); drawGame();
+    lastT = performance.now();
   }, ok ? 650 : 1600);
 }
-function serve(i){
-  const s = R.stoves[i]; if (!s || !s.ready) return;
-  const g = R.seats.find(x => x && x.id === s.gid); R.stoves[i] = null;
-  if (g){
-    const d = dish(s.d);
-    const pay = Math.round(d.price * combo() * (0.6 + 0.4 * g.pat + (g.fast ? 0.2 : 0)) * (1 + 0.15 * S.waiter));
-    S.coins += pay; R.earned += pay; R.served++; S.rating = Math.min(5, S.rating + 0.08);
-    g.state = "eat"; g.eat = 2.2; g.pop = pay;
+function levelEnd(){
+  R.over = true;
+  const r = R, k = key(r.li), m = [...r.missed];
+  const stars = 1 + (r.earned >= target(r.li) ? 1 : 0) + (r.earned >= target(r.li) && r.lost === 0 ? 1 : 0);
+  S.stars[k] = Math.max(S.stars[k] || 0, stars); save(); SFX.win();
+  setMeta("Level " + (r.li + 1) + " klaar", "", 100);
+  const hasNext = r.li + 1 < r.n;
+  $("#gOver").innerHTML = `<div class="sheetbg center"><div class="sheet clay-card end" role="dialog" aria-label="Level klaar">
+    <div class="bigstars">${[1,2,3].map(i => `<span class="${stars >= i ? "on" : ""}" style="animation-delay:${i * .15}s">${STARSVG(stars >= i, 44)}</span>`).join("")}</div>
+    <h2>Level ${r.li + 1} klaar!</h2>
+    <div class="stats"><div><b>€${r.earned}</b><span>doel €${target(r.li)}</span></div><div><b>${r.served}</b><span>gasten blij</span></div><div><b>${r.lost}</b><span>weggelopen</span></div></div>
+    <p>${stars === 3 ? "Perfect: doel gehaald en niemand weggelopen." : stars === 2 ? "Doel gehaald. Laat niemand weglopen voor 3 sterren." : "Haal €" + target(r.li) + " voor de 2e ster."}${r.burnt ? " " + r.burnt + "x aangebrand." : ""}</p>
+    ${m.length ? `<ul class="miss">${m.map(w => `<li><b>${esc(w.f)}</b><span>${esc(w.n)}</span></li>`).join("")}</ul>` : ""}
+    <div class="btns" style="width:100%">${hasNext ? `<button class="btn main clay" data-lvl="${r.li + 1}">Volgende level</button>` : ""}
+      <button class="btn soft" data-lvl="${r.li}">Opnieuw</button><button class="btn soft" data-act="map">Naar de kaart</button></div></div></div>`;
+  $("#gOver .btn")?.focus();
+}
+
+// =================== TEKENEN ===================
+function rr(x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function circ(x, y, r, c){ ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fillStyle = c; ctx.fill(); }
+function ell(x, y, rx, ry, c){ ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.fillStyle = c; ctx.fill(); }
+function plate(x, y, d, s = 1){ ell(x, y + 2 * s, 13 * s, 7 * s, "rgba(0,0,0,.15)"); ell(x, y, 13 * s, 7 * s, "#fff"); ell(x, y - 1 * s, 9 * s, 5 * s, d.c); circ(x - 3 * s, y - 2 * s, 1.8 * s, d.c2); circ(x + 3 * s, y, 1.8 * s, d.c2); }
+function person(p, o){
+  const x = p.x, y = p.y, moving = p.path && p.path.length, bob = moving ? Math.abs(Math.sin(p.walk * 11)) * 2.2 : 0;
+  ell(x, y, 11, 4, "rgba(0,0,0,.18)");
+  if (!o.seated){
+    const sw = moving ? Math.sin(p.walk * 11) * 3 : 0;
+    ctx.fillStyle = o.legs || "#3b3346"; rr(x - 6, y - 13 + sw * .3, 5, 13 - sw * .3, 2); ctx.fill(); rr(x + 1, y - 13 - sw * .3, 5, 13 + sw * .3, 2); ctx.fill();
   }
-  drawGame(); save();
+  const by = y - 32 - bob;
+  ctx.fillStyle = o.shirt; rr(x - 10, by, 20, 21, 8); ctx.fill();
+  if (o.apron){ ctx.fillStyle = "#fff"; rr(x - 6, by + 6, 12, 14, 3); ctx.fill(); }
+  if (o.bow){ ctx.fillStyle = "#111"; ctx.beginPath(); ctx.moveTo(x - 4, by + 2); ctx.lineTo(x + 4, by + 6); ctx.lineTo(x + 4, by + 2); ctx.lineTo(x - 4, by + 6); ctx.fill(); }
+  const hy = by - 8;
+  circ(x, hy, 9.5, o.skin);
+  ctx.fillStyle = o.hair; ctx.beginPath(); ctx.arc(x, hy - 1, 9.8, Math.PI * 1.05, Math.PI * 1.95); ctx.fill();
+  if (o.hat){ circ(x - 5, hy - 12, 5, "#fff"); circ(x + 5, hy - 12, 5, "#fff"); circ(x, hy - 15, 6, "#fff"); ctx.fillStyle = "#fff"; ctx.fillRect(x - 8, hy - 11, 16, 5); }
+  if (o.crown){ ctx.fillStyle = "#f5b301"; ctx.beginPath(); ctx.moveTo(x - 7, hy - 8); ctx.lineTo(x - 7, hy - 15); ctx.lineTo(x - 3.5, hy - 11); ctx.lineTo(x, hy - 16); ctx.lineTo(x + 3.5, hy - 11); ctx.lineTo(x + 7, hy - 15); ctx.lineTo(x + 7, hy - 8); ctx.fill(); }
+  const ey = hy + 1;
+  if (o.glasses){ ctx.strokeStyle = "#111"; ctx.lineWidth = 1.4; ctx.strokeRect(x - 7, ey - 2.5, 5.5, 4.5); ctx.strokeRect(x + 1.5, ey - 2.5, 5.5, 4.5); ctx.beginPath(); ctx.moveTo(x - 1.5, ey); ctx.lineTo(x + 1.5, ey); ctx.stroke(); }
+  circ(x - 3.5, ey, 1.4, "#2a1d16"); circ(x + 3.5, ey, 1.4, "#2a1d16");
+  ctx.strokeStyle = "#2a1d16"; ctx.lineWidth = 1.5; ctx.lineCap = "round"; ctx.beginPath();
+  if (o.mood === "happy") ctx.arc(x, hy + 3.5, 3, .15 * Math.PI, .85 * Math.PI);
+  else if (o.mood === "angry") ctx.arc(x, hy + 8, 3, 1.2 * Math.PI, 1.8 * Math.PI);
+  else { ctx.moveTo(x - 2.5, hy + 5.5); ctx.lineTo(x + 2.5, hy + 5.5); }
+  ctx.stroke();
+  if (o.carry){ plate(x + 12, by + 4, dish(o.carry), .8); }
 }
-function dayEnd(){
-  cancelAnimationFrame(raf); raf = 0;
-  const r = R, m = [...r.missed], lastBlock = r.di === r.nb - 1;
-  S.day[chap] = (S.day[chap] || 0) + 1; S.days++; save(); R = null;
-  setMeta("Dag " + S.days + " gesloten", "", 100);
-  lobby(`<div class="card end" style="min-height:0;gap:14px"><h2>${lastBlock ? "Alle blokken gehaald!" : "Dag gesloten"}</h2>
-    <p>Blok ${r.di + 1}: alle ${r.block.length} woorden 3 keer goed.</p>
-    <div class="stats"><div><b>€${r.earned}</b><span>verdiend</span></div><div><b>${r.served}</b><span>gasten blij</span></div><div><b>${r.lost}</b><span>weggelopen</span></div></div>
-    ${m.length ? `<p>Lastige woorden:</p><ul class="miss">${m.map(w => `<li><b>${esc(w.f)}</b><span>${esc(w.n)}</span></li>`).join("")}</ul>
-      <button class="btn soft" data-act="redo" style="width:100%">Dit blok nog een dag oefenen</button>` : `<p>Geen enkele fout. ¡Olé!</p>`}</div>`);
+function bubble(x, y, w, h){ ctx.fillStyle = "#fff"; rr(x - w / 2, y - h, w, h, 9); ctx.fill(); ctx.beginPath(); ctx.moveTo(x - 5, y - .5); ctx.lineTo(x + 5, y - .5); ctx.lineTo(x, y + 6); ctx.fill(); ctx.strokeStyle = "rgba(0,0,0,.08)"; ctx.lineWidth = 1; rr(x - w / 2, y - h, w, h, 9); ctx.stroke(); }
+function ring(x, y, r, f, c, lw = 4){ ctx.beginPath(); ctx.arc(x, y, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * f); ctx.strokeStyle = c; ctx.lineWidth = lw; ctx.lineCap = "round"; ctx.stroke(); }
+function draw(){
+  if (!ctx || !R) return;
+  const P = R.P, T = R.time;
+  // vloer
+  for (let y = 112; y < CHH; y += 24) for (let x = 0; x < CW; x += 24){ ctx.fillStyle = ((x + y) / 24) % 2 ? P.f1 : P.f2; ctx.fillRect(x, y, 24, 24); }
+  if (S.up.decor >= 3){ ctx.fillStyle = "#b8323a"; ctx.fillRect(AISLE - 22, 190, 44, 370); ctx.fillStyle = "#d9a441"; ctx.fillRect(AISLE - 22, 190, 3, 370); ctx.fillRect(AISLE + 19, 190, 3, 370); }
+  // keukenmuur + tegels
+  ctx.fillStyle = P.wall; ctx.fillRect(0, 0, CW, 112);
+  ctx.fillStyle = P.tile; for (let x = 0; x < CW; x += 20) for (let y = 0; y < 44; y += 20) if ((x + y) / 20 % 2) ctx.fillRect(x, y, 20, 20);
+  // bonnetjes
+  R.tickets.slice(0, 7).forEach((k, i) => {
+    const x = 6 + i * 50, d = dish(k.dish), n = d.steps.length;
+    ctx.fillStyle = "#fffdf6"; rr(x, 4, 46, 34, 5); ctx.fill(); ctx.fillStyle = k.state === "pass" ? "#10b981" : "#f59e0b"; ctx.fillRect(x, 4, 46, 4);
+    plate(x + 14, 22, d, .7);
+    for (let s = 0; s < n; s++) circ(x + 32 + s * 7 - (n - 1) * 3, 22, 2.6, s < k.step || k.state === "pass" ? "#10b981" : s === k.step && k.state === "busy" ? "#f59e0b" : "#d4d4d8");
+  });
+  // aanrecht
+  ctx.fillStyle = "#b9c0ca"; rr(4, 44, CW - 8, 66, 8); ctx.fill(); ctx.fillStyle = "#d7dce3"; rr(4, 44, CW - 8, 10, 6); ctx.fill();
+  for (const s of R.stations) drawStation(s, T);
+  for (const sm of R.smoke){ ctx.globalAlpha = .55 * (1 - sm.t / 1.2); circ(sm.x, sm.y - sm.t * 40, 5 + sm.t * 8, "#6b7280"); ctx.globalAlpha = 1; }
+  // kok
+  person(R.chef, {shirt:"#f8fafc", skin:"#e0a77a", hair:"#2b1d14", hat:true, apron:false, legs:"#334155", mood:"happy"});
+  // doorgeefluik
+  ctx.fillStyle = P.pass; rr(16, 140, CW - 32, 22, 6); ctx.fill(); ctx.fillStyle = "rgba(255,255,255,.18)"; ctx.fillRect(20, 142, CW - 40, 4);
+  R.pass.forEach(k => { if (!k.w || k.w.ph === "pick") plate(passX(k), 150, dish(k.dish)); });
+  // decor
+  const plant = (x, y) => { ctx.fillStyle = "#b45f3c"; rr(x - 9, y - 4, 18, 16, 3); ctx.fill(); circ(x - 6, y - 10, 8, "#2f9e5b"); circ(x + 6, y - 10, 8, "#2f9e5b"); circ(x, y - 18, 9, "#3cb371"); };
+  if (S.up.decor >= 1){ plant(18, 196); plant(342, 196); }
+  if (S.up.decor >= 2){ plant(18, 520); plant(342, 520); }
+  // deur
+  ctx.fillStyle = "#6b4a2f"; ctx.fillRect(AISLE - 34, CHH - 8, 68, 8); ctx.fillStyle = "#8b5a3c"; ctx.fillRect(AISLE - 28, CHH - 18, 56, 10);
+  // tafels + zittende gasten
+  const seated = new Set();
+  R.tables.forEach(t => {
+    const g = t.g && guestById(t.g);
+    ctx.fillStyle = "#8b5a3c"; rr(t.x - 13, t.y - 40, 26, 14, 4); ctx.fill(); // stoel
+    if (g && !g.path.length && g.state !== "out"){ seated.add(g); drawGuest(g, true, T); }
+    ell(t.x, t.y + 22, 40, 8, "rgba(0,0,0,.15)");
+    ctx.fillStyle = R.pi === 1 ? "#5e321c" : "#d6cfc0"; rr(t.x - 38, t.y - 14, 76, 32, 9); ctx.fill();
+    ctx.fillStyle = P.table; rr(t.x - 38, t.y - 18, 76, 30, 9); ctx.fill();
+    if (R.pi === 2){ ctx.fillStyle = "#f5b301"; circ(t.x + 26, t.y - 8, 3, "#fde68a"); }
+    if (g && g.state === "eat") plate(t.x, t.y - 4, dish(g.dish), 1.1);
+    if (t.cash){
+      const pulse = 1 + Math.sin(T * 6) * .06;
+      for (let i = 0; i < 3; i++){ ell(t.x + 18, t.y - 2 - i * 3, 9 * pulse, 4.5 * pulse, "#e0a800"); ell(t.x + 18, t.y - 3 - i * 3, 8 * pulse, 3.6 * pulse, "#fcd34d"); }
+      ctx.fillStyle = "#7c4a03"; ctx.font = "800 12px system-ui"; ctx.textAlign = "center"; ctx.fillText("€" + t.cash, t.x - 10, t.y + 2);
+    }
+  });
+  // lopende mensen, gesorteerd op diepte
+  const walkers = [...R.guests.filter(g => !seated.has(g)).map(g => ({y:g.y, f:() => drawGuest(g, false, T)})),
+    ...R.waiters.map(w => ({y:w.y, f:() => person(w, {shirt:"#1f2937", skin:"#c68654", hair:"#1c1c1c", bow:true, legs:"#111827", carry:w.carry, mood:"happy"})}))];
+  walkers.sort((a, b) => a.y - b.y).forEach(o => o.f());
+  // zwevende teksten
+  for (const p of R.pops){
+    ctx.globalAlpha = 1 - p.t / 1.4; ctx.font = "800 15px system-ui"; ctx.textAlign = "center";
+    ctx.lineWidth = 4; ctx.strokeStyle = "#fff"; ctx.strokeText(p.txt, p.x, p.y - p.t * 30); ctx.fillStyle = p.col; ctx.fillText(p.txt, p.x, p.y - p.t * 30); ctx.globalAlpha = 1;
+  }
 }
-function buy(k){
-  const u = UPG[k], c = u.cost[lvl(k)];
-  if (S[k] >= u.max || S.coins < c) return;
-  S.coins -= c; S[k]++; save(); lobby();
+function drawGuest(g, seated, T){
+  const ty = GTYPE[g.type];
+  const mood = g.state === "eat" || g.state === "out" && g.pat > 0 ? "happy" : g.pat < .3 ? "angry" : "neutral";
+  person(g, {shirt:g.type === "vip" ? "#7c3aed" : g.type === "critic" ? "#334155" : g.shirt, skin:g.skin, hair:g.hair, seated, crown:g.type === "vip", glasses:g.type === "critic", mood});
+  if (!seated) return;
+  const bx = g.x, by = g.y - 68;
+  if (g.state === "order"){
+    const s = 1 + Math.sin(T * 5) * .05; bubble(bx, by, 30 * s, 26 * s);
+    ctx.fillStyle = "#7c3aed"; ctx.font = "900 18px system-ui"; ctx.textAlign = "center"; ctx.fillText("!", bx, by - 7);
+  } else if (g.state === "food"){
+    bubble(bx, by, 34, 26); plate(bx, by - 12, dish(g.dish), .8);
+  } else if (g.state === "eat"){
+    bubble(bx, by, 26, 22); ctx.fillStyle = "#ec4899"; ctx.font = "900 14px system-ui"; ctx.textAlign = "center"; ctx.fillText("♥", bx, by - 6);
+  }
+  if (g.state === "order" || g.state === "food"){
+    ctx.fillStyle = "rgba(0,0,0,.18)"; rr(bx - 17, by + 9, 34, 5, 3); ctx.fill();
+    ctx.fillStyle = g.pat < .3 ? "#ef4444" : g.pat < .6 ? "#f59e0b" : "#22c55e"; rr(bx - 17, by + 9, 34 * Math.max(0, g.pat), 5, 3); ctx.fill();
+  }
+  if (ty.label){ ctx.font = "800 9px system-ui"; ctx.textAlign = "center"; const w = ctx.measureText(ty.label).width + 8;
+    ctx.fillStyle = g.type === "vip" ? "#7c3aed" : g.type === "critic" ? "#334155" : "#dc2626"; rr(bx - w / 2, g.y - 4, w, 13, 6); ctx.fill(); ctx.fillStyle = "#fff"; ctx.fillText(ty.label, bx, g.y + 6); }
 }
-function buyDish(id){
-  const d = dish(id); if (S.menu.includes(id) || S.coins < d.cost) return;
-  S.coins -= d.cost; S.menu.push(id); save(); lobby();
+function drawStation(s, T){
+  const x = s.x, y = 78;
+  ctx.globalAlpha = s.owned ? 1 : .35;
+  if (s.type === "fogon"){ ctx.fillStyle = "#2f343b"; rr(x - 24, y - 26, 48, 48, 8); ctx.fill(); ctx.strokeStyle = "#555c66"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y - 2, 15, 0, 7); ctx.stroke(); ctx.beginPath(); ctx.arc(x, y - 2, 8, 0, 7); ctx.stroke(); }
+  else if (s.type === "tabla"){ ctx.fillStyle = "#c08a4e"; rr(x - 24, y - 20, 48, 36, 7); ctx.fill(); ctx.fillStyle = "#d9a86a"; rr(x - 20, y - 16, 40, 28, 5); ctx.fill(); }
+  else { ctx.fillStyle = "#4b5563"; rr(x - 25, y - 28, 50, 52, 8); ctx.fill(); ctx.fillStyle = s.job && s.job.st === "cook" ? "#f59e0b" : "#1f2937"; rr(x - 17, y - 16, 34, 26, 5); ctx.fill(); ctx.fillStyle = "#9ca3af"; ctx.fillRect(x - 14, y - 24, 28, 4); }
+  ctx.globalAlpha = 1;
+  ctx.font = "700 9px system-ui"; ctx.textAlign = "center"; ctx.fillStyle = "#334155"; ctx.fillText(s.owned ? stName(s.type) : "op slot", x, y + 32);
+  const j = s.job; if (!j) return;
+  const d = dish(j.tk.dish);
+  if (s.type === "fogon"){ circ(x, y - 2, 16, "#4b5563"); ctx.fillStyle = "#4b5563"; ctx.fillRect(x + 14, y - 4, 12, 4); }
+  if (s.type !== "horno") { ell(x, y - 2, 11, 8, j.st === "ready" && j.bt > 6.5 ? "#3f2a1d" : d.c); circ(x - 4, y - 4, 2, d.c2); circ(x + 4, y, 2, d.c2); }
+  if (s.type === "tabla" && j.st === "cook"){ const k = Math.sin(T * 16) * 4; ctx.fillStyle = "#cbd5e1"; ctx.fillRect(x + 6, y - 14 + k, 12, 3); ctx.fillStyle = "#111"; ctx.fillRect(x + 16, y - 14 + k, 6, 3); }
+  if (j.st === "cook") ring(x, y - 2, 21, j.t / j.dur, "#f59e0b");
+  else {
+    const danger = ST[s.type].burn && j.bt > 5, flash = danger && Math.sin(T * 14) > 0;
+    ring(x, y - 2, 21, 1, flash ? "#ef4444" : "#22c55e", 5);
+    circ(x + 17, y - 22, 8, danger ? "#ef4444" : "#22c55e"); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.2; ctx.beginPath();
+    if (danger){ ctx.moveTo(x + 17, y - 26); ctx.lineTo(x + 17, y - 21); ctx.moveTo(x + 17, y - 18.5); ctx.lineTo(x + 17, y - 18); } else { ctx.moveTo(x + 13.5, y - 22); ctx.lineTo(x + 16, y - 19.5); ctx.lineTo(x + 20.5, y - 25); }
+    ctx.stroke();
+  }
 }
+
+// =================== INVOER ===================
 $("#stage").addEventListener("click", e => {
   if (mode !== "game") return;
-  const t = e.target.closest("[data-act],[data-opt],[data-buy],[data-dish]"); if (!t) return;
+  const t = e.target.closest("[data-act],[data-opt],[data-buy],[data-dish],[data-lvl]"); if (!t) return;
   if (t.dataset.opt !== undefined) return answer(+t.dataset.opt);
+  if (t.dataset.lvl !== undefined) return openLevel(+t.dataset.lvl);
   if (t.dataset.buy) return buy(t.dataset.buy);
   if (t.dataset.dish) return buyDish(t.dataset.dish);
   const a = t.dataset.act;
-  if (a === "open") openDay();
-  else if (a === "redo"){ S.day[chap] = Math.max(0, S.day[chap] - 1); save(); openDay(); }
-  else if (a === "ask") ask(+t.dataset.id);
-  else if (a === "serve") serve(+t.dataset.i);
-  else if (a === "close" && e.target === t && R.sheet && R.sheet.picked === null){ R.sheet = null; lastT = performance.now(); drawGame(); }
+  if (a === "mute"){ S.mute = !S.mute; save(); t.innerHTML = SOUND(!S.mute); t.setAttribute("aria-label", S.mute ? "Geluid aan" : "Geluid uit"); }
+  else if (a === "quit" || a === "map") startGame();
+  else if (a === "close" && e.target === t && R && R.sheet && R.sheet.picked === null){ R.sheet = null; drawSheet(); lastT = performance.now(); }
 });
 document.addEventListener("keydown", e => {
   if (mode !== "game" || !R) return;
   if (R.sheet && "1234".includes(e.key) && e.key) answer(+e.key - 1);
-  else if (!R.sheet && (e.key === "Enter" || e.key === " ") && e.target.dataset?.act === "ask"){ e.preventDefault(); ask(+e.target.dataset.id); }
-  else if (R.sheet && e.key === "Escape" && R.sheet.picked === null){ R.sheet = null; drawGame(); }
+  else if (R.sheet && e.key === "Escape" && R.sheet.picked === null){ R.sheet = null; drawSheet(); }
 });
 
 renderDir(); start();
